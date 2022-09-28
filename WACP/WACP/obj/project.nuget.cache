@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "MXOwzJoj/eqZR17KN8E6RTLZhtQn+dtJXDR+BcEmNTsaw4lKOSyRPRFH35WSLxkgClAbMPAKRIl+YACyE4kj6w==",
+  "success": true,
+  "projectFilePath": "D:\\Danik\\7 semester\\PiI\\Course Project\\WACP\\WACP\\WACP.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\USER\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.17.0\\microsoft.visualstudio.azure.containers.tools.targets.1.17.0.nupkg.sha512"
+  ],
+  "logs": []
+}
