@@ -2,18 +2,19 @@
     //промежуточный класс для получение разрешения из клсса тегов
     public class Group {
         #region Varialbe
-        public Guid _ID;
-        private string _Name;
-        public Guid Id {
+        public String _ID;
+        private String _Name;
+
+        public String Id {
             get => _ID;
             set => _ID = value;
         }
-        public string Name {
+        public String Name {
             get => _Name;
             set => _Name = value;
         }
         #endregion
-        public Group(Guid idUser) {
+        public Group(String ID, String Name) {
 
         }
 

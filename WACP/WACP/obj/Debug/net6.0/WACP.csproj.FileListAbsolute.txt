@@ -24,3 +24,4 @@ D:\Danik\7 semester\PiI\Course Project\WACP\WACP\obj\Debug\net6.0\refint\WACP.dl
 D:\Danik\7 semester\PiI\Course Project\WACP\WACP\obj\Debug\net6.0\WACP.pdb
 D:\Danik\7 semester\PiI\Course Project\WACP\WACP\obj\Debug\net6.0\WACP.genruntimeconfig.cache
 D:\Danik\7 semester\PiI\Course Project\WACP\WACP\obj\Debug\net6.0\ref\WACP.dll
+D:\Danik\7 semester\PiI\Course Project\WACP\WACP\bin\Debug\net6.0\web.config
