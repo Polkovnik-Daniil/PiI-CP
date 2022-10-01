@@ -2,12 +2,12 @@
     //промежуточный класс для получение разрешения из клсса тегов
     public class Group {
         #region Varialbe
-        public String _ID;
+        public String _UID;
         private String _Name;
 
         public String Id {
-            get => _ID;
-            set => _ID = value;
+            get => _UID;
+            set => _UID = value;
         }
         public String Name {
             get => _Name;
