@@ -1,6 +1,6 @@
 CREATE TRIGGER Groups_INSERT
 ON Groups
-INSTEAD OF INSERT
+AFTER INSERT
 AS 
 BEGIN 
 	DECLARE @Name nvarchar(20) = (select top(1)[Name] from inserted),
@@ -12,16 +12,13 @@ BEGIN
 	DECLARE @QueryCreateGroupTable nvarchar(1000) = 'CREATE TABLE ' + @Name + ' (UID nvarchar(40) NOT NULL, CONSTRAINT PK_' + @Name + ' PRIMARY KEY (UID), 
 													CONSTRAINT FK_' + @Name + '_Users FOREIGN KEY (UID) REFERENCES dbo.Users (ID)
 													ON DELETE CASCADE 
-													ON UPDATE CASCADE);', --UID - user ID 
-			@QueryInsertData nvarchar(100) = 'INSERT INTO [dbo].[Groups] ([ID], [Name], [GAID]) VALUES (N''' + @ID + ''' , N''' + @Name + ''' , N''' + @GAID +''')'; --,
+													ON UPDATE CASCADE);';        --UID - user ID 
 			--!таблицу ниже доделать(а именно при созданиии таблицы извечь все данные из другой и поставить все значения по дефолту)!--
-			--@QueryCreateGroupAttrTable nvarchar(100) = 'CREATE TABLE ' + @GAID + '()';
+			--@QueryCreateGroupAttrTable nvarchar(1000) = 'CREATE TABLE GA' + @Name + '(АТРРИБУТЫ С БУЛЕВЫМ ЗНАЧЕНИЕМ)';
 			--!create connection between table!--
 			--example--
-	PRINT 'HI'
 	EXECUTE sp_executesql @QueryCreateGroupTable, @QueryInsertData;
-	PRINT 'HI1'
-
+	PRINT @QueryCreateGroupTable
 END;
  
 DROP TRIGGER Groups_INSERT;
