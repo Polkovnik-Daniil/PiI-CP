@@ -1,5 +1,0 @@
-CREATE TRIGGER Attributes_INSERT
-ON [dbo].[Attributes]
-AFTER INSERT
-AS 
-BEGIN 

@@ -1,3 +1,8 @@
+using Microsoft.Extensions.Configuration;
+using WACP.Models;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -16,8 +21,12 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
 app.UseAuthorization();
+
+var connection = builder.Configuration.GetSection("ConnectionStrings").Get<String>(); 
+builder.Services.AddDbContext<ApplicationContext>(options =>
+                options.UseSqlServer(connection));
+builder.Services.AddControllersWithViews();
 
 app.MapControllerRoute(
     name: "default",

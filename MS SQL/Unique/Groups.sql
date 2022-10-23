@@ -1,5 +1,5 @@
-ALTER TABLE Groups
- ADD CONSTRAINT uniq_Groups UNIQUE (Name, GAID)
+alter table Groups
+ add constraint uniq_Groups unique (Name, GAID, GAN);
 
-ALTER TABLE Groups
- DROP CONSTRAINT uniq_Groups;
+alter table Groups
+ drop constraint uniq_Groups;

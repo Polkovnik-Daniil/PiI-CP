@@ -1,22 +1,11 @@
-USE [PiI-CP]
-GO
+create table [dbo].[Groups](
+	[ID] [nvarchar](40) NOT NULL,					--ID Group
+	[Name] [nvarchar](20) NOT NULL,					--Name Group
+	[GAID] [nvarchar](40) NOT NULL,					--Group Attribute ID 
+	[GAN] [nvarchar](40) NOT NULL,					--Group Atrribute Name
+	constraint pk_Groups primary key([ID])			--Primary key
+);
 
-/****** Object:  Table [dbo].[Groups]    Script Date: 30.09.2022 10:03:11 ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
-CREATE TABLE [dbo].[Groups](
-	[ID] [nvarchar](40) NOT NULL,
-	[Name] [nvarchar](20) NOT NULL,
-	[GAID] [nvarchar](40) NOT NULL,						--Group Attribute ID
- CONSTRAINT [PK_Groups] PRIMARY KEY CLUSTERED 
-(
-	[ID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-drop table [Groups]
-
+drop table [dbo].[Groups];
+--alter table [dbo].[Groups] 
+--	drop constraint ID

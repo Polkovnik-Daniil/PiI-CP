@@ -5,14 +5,11 @@
         public String _UID;
         private String _Name;
 
-        public String Id {
+        public String UID {
             get => _UID;
             set => _UID = value;
         }
-        public String Name {
-            get => _Name;
-            set => _Name = value;
-        }
+
         #endregion
         public Group(String ID, String Name) {
 
