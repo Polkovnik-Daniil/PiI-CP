@@ -1,7 +1,7 @@
 CREATE TABLE Flights
 (
-  [ID_Flight] [nvarchar](40) NOT NULL,
-  [ID_Airplane] [nvarchar](40) NOT NULL,
+  [FID] [INTEGER] NOT NULL,
+  [IDA] [INTEGER] NOT NULL,
   [Date_and_Time_of_Departure] date NOT NULL,
   [Date_and_Time_of_Arrival] date NOT NULL,
   [Departure_Point] [nvarchar](40) NOT NULL,
@@ -9,11 +9,11 @@ CREATE TABLE Flights
   [Point_of_Arrival] [nvarchar](40) NOT NULL,
   [Arrival_Airport] [nvarchar](40) NOT NULL,
   [Status] [nvarchar](40) NOT NULL,
-  [Number_Free_places] INTEGER NOT NULL,
-  [IDT] [nvarchar](40) NOT NULL,						--ID table Tickets flight
-  CONSTRAINT id_flights_pk PRIMARY KEY (id_flight),
-    CONSTRAINT fk_id_airplane
-      FOREIGN KEY (id_airplane)
-      REFERENCES Airplanes(id_airplane)
+  [Number_Free_places] [INTEGER] NOT NULL,
+  [IDT] [int] NOT NULL,						--ID table Tickets flight
+  CONSTRAINT idf_pk PRIMARY KEY ([FID]),
+  CONSTRAINT fk_ida
+	FOREIGN KEY ([IDA])
+	REFERENCES Airplanes([IDA])
 );
 DROP TABLE Flights;
