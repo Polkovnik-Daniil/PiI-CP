@@ -4,6 +4,8 @@ const { env } = require('process');
 const target = env.ASPNETCORE_HTTPS_PORT ? `https://localhost:${env.ASPNETCORE_HTTPS_PORT}` :
   env.ASPNETCORE_URLS ? env.ASPNETCORE_URLS.split(';')[0] : 'http://localhost:49633';
 
+const prefix = '/api';
+
 const context =  [
   "/weatherforecast",
   "/_configuration",
@@ -12,7 +14,11 @@ const context =  [
   "/connect",
   "/ApplyDatabaseMigrations",
   "/_framework",
-  "/api/about"
+  `${prefix}/about`,
+  `${prefix}/airplane`,
+  `${prefix}/flights`,
+  `${prefix}/mans`,
+  `${prefix}/tickets`
 ];
 
 module.exports = function(app) {

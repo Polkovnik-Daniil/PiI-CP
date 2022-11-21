@@ -86,3 +86,6 @@ D:\Danik\7 semester\PiI\Course Project\WebApp\WebApp\obj\Debug\net6.0\refint\Web
 D:\Danik\7 semester\PiI\Course Project\WebApp\WebApp\obj\Debug\net6.0\WebApp.pdb
 D:\Danik\7 semester\PiI\Course Project\WebApp\WebApp\obj\Debug\net6.0\WebApp.genruntimeconfig.cache
 D:\Danik\7 semester\PiI\Course Project\WebApp\WebApp\obj\Debug\net6.0\ref\WebApp.dll
+D:\Danik\7 semester\PiI\Course Project\WebApp\WebApp\bin\Debug\net6.0\System.Net.Http.Formatting.dll
+D:\Danik\7 semester\PiI\Course Project\WebApp\WebApp\bin\Debug\net6.0\System.Web.Http.dll
+D:\Danik\7 semester\PiI\Course Project\WebApp\WebApp\bin\Debug\net6.0\Newtonsoft.Json.Bson.dll

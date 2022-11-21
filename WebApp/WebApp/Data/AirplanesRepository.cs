@@ -45,7 +45,6 @@ namespace WebApp.Data {
             }
             this.disposed = true;
         }
-
         public void Dispose() {
             Dispose(true);
             GC.SuppressFinalize(this);

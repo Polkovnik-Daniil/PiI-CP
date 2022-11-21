@@ -8,7 +8,6 @@ using static IdentityModel.ClaimComparer;
 namespace WebApp.Data {
     public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser> {
         public static DbContextOptions _options;
-
         public static IOptions<OperationalStoreOptions> _operationalStoreOptions;
 
         public DbSet<Airplanes> Airplanes { get; set; }
