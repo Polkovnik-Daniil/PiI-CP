@@ -11,15 +11,15 @@ namespace WebApp.Data {
         }
 
         public IEnumerable<Tickets> GetList() {
-            return db._tickets;
+            return db.Tickets;
         }
 
         public Tickets GetElement(int id) {
-            return db._tickets.Find(id);
+            return db.Tickets.Find(id);
         }
 
         public void Create(Tickets ticket) {
-            db._tickets.Add(ticket);
+            db.Tickets.Add(ticket);
         }
 
         public void Update(Tickets ticket) {
@@ -27,9 +27,9 @@ namespace WebApp.Data {
         }
 
         public void Delete(int id) {
-            Tickets ticket = db._tickets.Find(id);
+            Tickets ticket = db.Tickets.Find(id);
             if (ticket != null)
-                db._tickets.Remove(ticket);
+                db.Tickets.Remove(ticket);
         }
 
         public void Save() {

@@ -11,10 +11,10 @@ namespace WebApp.Data {
 
         public static IOptions<OperationalStoreOptions> _operationalStoreOptions;
 
-        public DbSet<Airplanes> _airplanes { get; set; }
-        public DbSet<Flights> _flights { get; set; }
-        public DbSet<Mans> _mans { get; set; }
-        public DbSet<Tickets> _tickets { get; set; }
+        public DbSet<Airplanes> Airplanes { get; set; }
+        public DbSet<Flights> Flights { get; set; }
+        public DbSet<Mans> Mans { get; set; }
+        public DbSet<Tickets> Tickets { get; set; }
         public ApplicationDbContext(DbContextOptions options, IOptions<OperationalStoreOptions> operationalStoreOptions)
             : base(options, operationalStoreOptions) {
             _options = options;

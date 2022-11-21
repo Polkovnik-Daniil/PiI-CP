@@ -10,15 +10,15 @@ namespace WebApp.Data {
         }
 
         public IEnumerable<Mans> GetList() {
-            return db._mans;
+            return db.Mans;
         }
 
         public Mans GetElement(int id) {
-            return db._mans.Find(id);
+            return db.Mans.Find(id);
         }
 
         public void Create(Mans man) {
-            db._mans.Add(man);
+            db.Mans.Add(man);
         }
 
         public void Update(Mans man) {
@@ -26,9 +26,9 @@ namespace WebApp.Data {
         }
 
         public void Delete(int id) {
-            Mans mans = db._mans.Find(id);
+            Mans mans = db.Mans.Find(id);
             if (mans != null)
-                db._mans.Remove(mans);
+                db.Mans.Remove(mans);
         }
 
         public void Save() {

@@ -10,15 +10,15 @@ namespace WebApp.Data {
         }
 
         public IEnumerable<Flights> GetList() {
-            return db._flights;
+            return db.Flights;
         }
 
         public Flights GetElement(int id) {
-            return db._flights.Find(id);
+            return db.Flights.Find(id);
         }
 
         public void Create(Flights flight) {
-            db._flights.Add(flight);
+            db.Flights.Add(flight);
         }
 
         public void Update(Flights flight) {
@@ -26,9 +26,9 @@ namespace WebApp.Data {
         }
 
         public void Delete(int id) {
-            Flights flight = db._flights.Find(id);
+            Flights flight = db.Flights.Find(id);
             if (flight != null)
-                db._flights.Remove(flight);
+                db.Flights.Remove(flight);
         }
 
         public void Save() {
