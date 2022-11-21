@@ -1,21 +1,23 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebApp.Data;
+using WebApp.Models;
 
 namespace WebApp.Controllers {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class AboutController : Controller {
+        IRepository<Mans> db;
+
+        public AboutController() {
+            db = new MansRepository();
+        }
         // GET: AboutController
 
         [HttpGet]
         //[Authorize(Roles ="Administrator")]
-        public IEnumerable<String> Index() {
-            List<String> list = new List<String>();
-            list.Add("fdiuvb");
-            if (User.Identity!.Name == "0205danik@gmail.com")
-                list.Add("fdiuvb2983r");
-            
-            return list.AsEnumerable();
+        public IEnumerable<Mans> Index() {
+            return db.GetList();
         }
     }
 }

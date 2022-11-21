@@ -12,7 +12,7 @@ const context =  [
   "/connect",
   "/ApplyDatabaseMigrations",
   "/_framework",
-  "/about"
+  "/api/about"
 ];
 
 module.exports = function(app) {
