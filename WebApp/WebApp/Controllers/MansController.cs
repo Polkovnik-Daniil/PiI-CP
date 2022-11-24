@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 using WebApp.Data;
 using WebApp.Models;
 
 namespace WebApp.Controllers {
     [ApiController]
+    [System.Web.Http.Authorize(Roles = "Administrator")]
     [Route("api/[controller]/")]
     public class MansController : Controller {
         IRepository<Mans> db;
@@ -24,11 +26,19 @@ namespace WebApp.Controllers {
             return db.GetElement(id);
         }
 
+        //[HttpPost]
+        //[Route("create")]
+        //public void Create(int IDM, String Passport_number, String Name, String Surname, bool Sex) {
+        //    db.Create(new Mans() { IDM = IDM, Passport_number = Passport_number, Name = Name, Surname = Surname, Sex = Sex });
+        //}
+
         [HttpPost]
         [Route("create")]
-        public void Create(int IDM, String Passport_number, String Name, String Surname, bool Sex) {
-            db.Create(new Mans() { IDM = IDM, Passport_number = Passport_number, Name = Name, Surname = Surname, Sex = Sex });
+        public void Create([FromBody] Mans man) {
+            db.Create(man);
         }
+
+
 
         [HttpGet]
         [Route("delete")]

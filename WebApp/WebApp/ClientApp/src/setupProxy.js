@@ -6,29 +6,28 @@ const target = env.ASPNETCORE_HTTPS_PORT ? `https://localhost:${env.ASPNETCORE_H
 
 const prefix = '/api';
 
-const context =  [
-  "/weatherforecast",
-  "/_configuration",
-  "/.well-known",
-  "/Identity",
-  "/connect",
-  "/ApplyDatabaseMigrations",
-  "/_framework",
-  `${prefix}/about`,
-  `${prefix}/airplane`,
-  `${prefix}/flights`,
-  `${prefix}/mans`,
-  `${prefix}/tickets`
+const context = [
+    "/weatherforecast",
+    "/_configuration",
+    "/.well-known",
+    "/Identity",
+    "/connect",
+    "/ApplyDatabaseMigrations",
+    "/_framework",
+    `${prefix}/about`,
+    `${prefix}/airplane`,
+    `${prefix}/flights`,
+    `${prefix}/mans`,
+    `${prefix}/tickets`
 ];
 
-module.exports = function(app) {
-  const appProxy = createProxyMiddleware(context, {
-    target: target,
-    secure: false,
-    headers: {
-      Connection: 'Keep-Alive'
-    }
-  });
-
-  app.use(appProxy);
+module.exports = function (app) {
+    const appProxy = createProxyMiddleware(context, {
+        target: target,
+        secure: false,
+        headers: {
+            Connection: 'Keep-Alive'
+        }
+    });
+    app.use(appProxy);
 };
