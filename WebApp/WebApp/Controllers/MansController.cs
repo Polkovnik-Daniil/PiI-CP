@@ -1,23 +1,36 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
+using System.Net.Mail;
 using WebApp.Data;
 using WebApp.Models;
 
 namespace WebApp.Controllers {
     [ApiController]
-    [System.Web.Http.Authorize(Roles = "Administrator")]
     [Route("api/[controller]/")]
     public class MansController : Controller {
         IRepository<Mans> db;
-        public MansController() {
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
+        public MansController(UserManager<ApplicationUser> userManager,
+                              SignInManager<ApplicationUser> signInManager) {
             db = new MansRepository();
+            this.userManager = userManager;
+            this.signInManager = signInManager;
         }
 
         [HttpGet]
         [Route("get")]
-        public IEnumerable<Mans> Get() {
-            return db.GetList();
+        public async Task<IEnumerable<Mans>?> GetAsync(string username) {
+            if (username != null || username != "") {
+                ApplicationUser user = await userManager.FindByEmailAsync(username);
+                // Get the roles for the user
+                bool IsAdmin = await userManager.IsInRoleAsync(user, "Administrator");
+                return IsAdmin ? db.GetList() : null;
+            }
+            Response.StatusCode = 404;
+            return null;
         }
 
         [HttpGet]
@@ -28,7 +41,7 @@ namespace WebApp.Controllers {
 
         //[HttpPost]
         //[Route("create")]
-        //public void Create(int IDM, String Passport_number, String Name, String Surname, bool Sex) {
+        //public void Create(int IDM, string Passport_number, string Name, string Surname, bool Sex) {
         //    db.Create(new Mans() { IDM = IDM, Passport_number = Passport_number, Name = Name, Surname = Surname, Sex = Sex });
         //}
 
@@ -38,8 +51,6 @@ namespace WebApp.Controllers {
             db.Create(man);
         }
 
-
-
         [HttpGet]
         [Route("delete")]
         public void Delete(int id) {
@@ -48,7 +59,7 @@ namespace WebApp.Controllers {
 
         [HttpGet]
         [Route("update")]
-        public void Update(int IDM, String Passport_number, String Name, String Surname, bool Sex) {
+        public void Update(int IDM, string Passport_number, string Name, string Surname, bool Sex) {
             db.Update(new Mans() { IDM = IDM, Passport_number = Passport_number, Name = Name, Surname = Surname, Sex = Sex });
         }
     }

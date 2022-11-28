@@ -5,9 +5,9 @@ namespace WebApp.Models {
     public class Mans {
         [Key]
         public int IDM { get; set; } //IDMAN
-        public String Passport_number { get; set; }
-        public String Name { get; set; }
-        public String Surname { get; set; }
+        public string Passport_number { get; set; }
+        public string Name { get; set; }
+        public string Surname { get; set; }
         public bool Sex { get; set; }
     }
 }

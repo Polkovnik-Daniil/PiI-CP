@@ -27,7 +27,7 @@ namespace WebApp.Controllers {
 
         [HttpPost]
         [Route("create")]
-        public void Create(int ida, String Name_Airplane, int Number_places, String Creator) {
+        public void Create(int ida, string Name_Airplane, int Number_places, string Creator) {
             db.Create(new Airplanes() { IDA = ida, Name_Airplanes = Name_Airplane, Number_places = Number_places, Creator = Creator });
         }
 
@@ -39,7 +39,7 @@ namespace WebApp.Controllers {
 
         [HttpGet]
         [Route("update")]
-        public void Update(int ida, String Name_Airplane, int Number_places, String Creator) {
+        public void Update(int ida, string Name_Airplane, int Number_places, string Creator) {
             db.Update(new Airplanes() { IDA = ida, Name_Airplanes = Name_Airplane, Number_places = Number_places, Creator = Creator });
         }
     }

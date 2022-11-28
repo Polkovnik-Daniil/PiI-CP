@@ -17,9 +17,14 @@ namespace WebApp {
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
-            builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();//.AddDefaultTokenProviders();//
+            
+            //main
+            //builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            //    .AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();//
+            
+            //don`t main
+            builder.Services.AddDefaultIdentity<ApplicationUser>().AddRoles<IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+            //
 
             builder.Services.AddIdentityServer()
                 .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
@@ -29,7 +34,7 @@ namespace WebApp {
 
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
-
+            
             //
             //builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
             //        .AddEntityFrameworkStores<ApplicationDbContext>()

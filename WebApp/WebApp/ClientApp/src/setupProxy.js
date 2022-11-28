@@ -18,7 +18,8 @@ const context = [
     `${prefix}/airplane`,
     `${prefix}/flights`,
     `${prefix}/mans`,
-    `${prefix}/tickets`
+    `${prefix}/tickets`,
+    `${prefix}/userdata`
 ];
 
 module.exports = function (app) {

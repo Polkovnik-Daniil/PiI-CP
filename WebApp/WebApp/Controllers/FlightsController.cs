@@ -28,9 +28,9 @@ namespace WebApp.Controllers {
         [HttpPost]
         [Route("create")]
         public void Create(int FID, int IDA, DateTime Date_and_Time_of_Departure,
-                           DateTime Date_and_Time_of_Arrival, String Departure_Point,
-                           String Departure_Airport, String Point_of_Arrival,
-                           String Arrival_Airport, String Status,
+                           DateTime Date_and_Time_of_Arrival, string Departure_Point,
+                           string Departure_Airport, string Point_of_Arrival,
+                           string Arrival_Airport, string Status,
                            int Number_Free_places, int IDT) {
             db.Create(new Flights() {
                 FID = FID,
@@ -56,9 +56,9 @@ namespace WebApp.Controllers {
         [HttpGet]
         [Route("update")]
         public void Update(int FID, int IDA, DateTime Date_and_Time_of_Departure,
-                           DateTime Date_and_Time_of_Arrival, String Departure_Point,
-                           String Departure_Airport, String Point_of_Arrival,
-                           String Arrival_Airport, String Status,
+                           DateTime Date_and_Time_of_Arrival, string Departure_Point,
+                           string Departure_Airport, string Point_of_Arrival,
+                           string Arrival_Airport, string Status,
                            int Number_Free_places, int IDT) {
             db.Create(new Flights() {
                 FID = FID,

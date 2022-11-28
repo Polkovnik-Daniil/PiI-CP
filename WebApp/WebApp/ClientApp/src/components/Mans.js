@@ -22,34 +22,43 @@ export class Mans extends Component {
                 { dataField: "sex", text: "Sex", sort: true }
             ]
             //add pagination into BootstrapTable
-            //,
-            //pagination: paginationFactory({
-            //    page: 1,
-            //    sizePerPage: 5,
-            //    lastPageText: ">>",
-            //    firstPageText: "<<",
-            //    nextPageText: ">",
-            //    prePageText: "<",
-            //    showTotal: true,
-            //    alwaysShowAllBtns: true,
-            //    onPageChange: function (page, sizePerPage) {
-            //        console.log("page", page);
-            //        console.log("sizePerPage", sizePerPage);
-            //    },
-            //    onSizePerPageChange: function (page, sizePerPage) {
-            //        console.log("page", page);
-            //        console.log("sizePerPage", sizePerPage);
-            //    }
-            //})
+            ,
+            pagination: paginationFactory({
+                page: 1,
+                sizePerPage: 5,
+                lastPageText: ">>",
+                firstPageText: "<<",
+                nextPageText: ">",
+                prePageText: "<",
+                showTotal: true,
+                alwaysShowAllBtns: true,
+                onPageChange: function (page, sizePerPage) {
+                    console.log("page", page);
+                    console.log("sizePerPage", sizePerPage);
+                },
+                onSizePerPageChange: function (page, sizePerPage) {
+                    console.log("page", page);
+                    console.log("sizePerPage", sizePerPage);
+                }
+            }),
+            userName: ""
         };
     }
+    componentWillUnmount() {
+        authService.unsubscribe(this._subscription);
+    }
     componentDidMount() {
-        this.populateMans();
+        this._subscription = authService.subscribe(() => this.getMans());
+        this.getMans();
     }
     
-    static renderMansTable(data, columns/*, pagination*/) {
+    static renderMansTable(data, columns, pagination) {
+        if () {
+
+        }
         return (
-            <BootstrapTable bootstrap4 keyField='idm' columns={columns} data={data} /*pagination={pagination} filter={filterFactory}*/ />
+            <BootstrapTable bootstrap4 keyField='idm' columns={columns} data={data} pagination={pagination} /*filter={filterFactory}*/ />
+
         //if you don`t will use include library you should back to standart
         //    <center>
         //        <table className='table table-striped' aria-labelledby="tabelLabel" id="myTable">
@@ -80,7 +89,7 @@ export class Mans extends Component {
     render() {
         let contents = this.state.loading
             ? <p><em>Loading...</em></p>
-            : Mans.renderMansTable(this.state.data, this.state.columns/*, this.state.pagination*/); // add pagination into BootstrapTable
+            : Mans.renderMansTable(this.state.data, this.state.columns, this.state.pagination); // add pagination into BootstrapTable
         return (
             <div>
                 <center><h1 id="tabelLabel" >Mans data</h1></center>
@@ -89,7 +98,7 @@ export class Mans extends Component {
         );
     }
 
-    async populateMans() {
+    async getMans() {
         const token = await authService.getAccessToken();
         const response = await fetch('api/mans/get', {
             headers: !token ? {} : { 'Authorization': `Bearer ${token}` }

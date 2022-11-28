@@ -3,11 +3,12 @@ import { NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import authService from './AuthorizeService';
 import { ApplicationPaths } from './ApiAuthorizationConstants';
+import Mans from '../Mans';
+import { NavMenu } from '../NavMenu';
 
 export class LoginMenu extends Component {
     constructor(props) {
         super(props);
-
         this.state = {
             isAuthenticated: false,
             userName: null
@@ -25,12 +26,14 @@ export class LoginMenu extends Component {
 
     async populateState() {
         const [isAuthenticated, user] = await Promise.all([authService.isAuthenticated(), authService.getUser()])
+        //const userName = user && user.name;
+        //< Mans userName={userName} />;
+        //< NavMenu isAuthenticate = { isAuthenticated } />;
         this.setState({
             isAuthenticated,
             userName: user && user.name
         });
     }
-
     render() {
         const { isAuthenticated, userName } = this.state;
         if (!isAuthenticated) {

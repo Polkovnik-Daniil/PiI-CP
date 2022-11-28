@@ -3,6 +3,8 @@ import { Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from '
 import { Link } from 'react-router-dom';
 import { LoginMenu } from './api-authorization/LoginMenu';
 import './NavMenu.css';
+import authService from './api-authorization/AuthorizeService';
+import Mans from './Mans';
 
 export class NavMenu extends Component {
     static displayName = NavMenu.name;
@@ -12,7 +14,9 @@ export class NavMenu extends Component {
 
         this.toggleNavbar = this.toggleNavbar.bind(this);
         this.state = {
-            collapsed: true
+            collapsed: true,
+            isAuthenticated: false,
+            isAdministrator: false
         };
     }
 
@@ -21,7 +25,26 @@ export class NavMenu extends Component {
             collapsed: !this.state.collapsed
         });
     }
-
+    async getUserRole() {
+        const [isAuthenticated, user] = await Promise.all([authService.isAuthenticated(), authService.getUser()]);
+        this.state.isAuthenticated = isAuthenticated;
+        this.state.user = user;
+        if (isAuthenticated) {
+            const token = await authService.getAccessToken();
+            const response = await fetch(`/api/userdata/get?username=${user.name}`, {
+                headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await response.json();
+            this.setState({ isAdministrator: isAuthenticated });
+        }
+    }
+    componentWillUnmount() {
+        authService.unsubscribe(this._subscription);
+    }
+    componentDidMount() {
+        this._subscription = authService.subscribe(() => this.getUserRole());
+        this.getUserRole();
+    }
     render() {
         return (
             <header>
@@ -39,9 +62,12 @@ export class NavMenu extends Component {
                             <NavItem>
                                 <NavLink tag={Link} className="text-dark" to="/fetch-data">Fetch data</NavLink>
                             </NavItem>
-                            <NavItem>
-                                <NavLink tag={Link} className="text-dark" to="/mans">Mans</NavLink>
-                            </NavItem>
+                            {
+                                this.state.isAdministrator ?
+                                    < NavItem >
+                                        <NavLink tag={Link} className="text-dark" to="/mans">Mans</NavLink>
+                                    </NavItem> : null
+                            }
                             <LoginMenu>
                             </LoginMenu>
                         </ul>
