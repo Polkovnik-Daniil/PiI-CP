@@ -6,7 +6,7 @@ import paginationFactory from 'react-bootstrap-table2-paginator';
 import 'react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css';
 import 'react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.min.css';
 import authService from './api-authorization/AuthorizeService';
-import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
+import filterFactory, { selectFilter, textFilter } from 'react-bootstrap-table2-filter';
 import { Navigate } from 'react-router-dom';
 
 
@@ -18,11 +18,14 @@ export class Mans extends Component {
         this.state = {
             successful: false,
             data: [], loading: true, columns: [
-                { dataField: "idm", text: "IDM", sort: true/*, filter: textFilter()*/ }, //add filter into BootstrapTable
-                { dataField: "passport_number", text: "Passport Number", sort: true },
-                { dataField: "name", text: "Name", sort: true },
-                { dataField: "surname", text: "Surname", sort: true },
-                { dataField: "sex", text: "Sex", sort: true }
+                { dataField: "idm", text: "IDM", sort: true, filter: textFilter() }, //add filter into BootstrapTable
+                { dataField: "passport_number", text: "Passport Number", sort: true, filter: textFilter()},
+                { dataField: "name", text: "Name", sort: true, filter: textFilter() },
+                { dataField: "surname", text: "Surname", sort: true, filter: textFilter() },
+                { dataField: "sex", text: "Sex", sort: true, filter: selectFilter({ options: {
+                    2: 'true',
+                    1: 'false'
+                } }) },
             ],
             //add pagination into BootstrapTable
             pagination: paginationFactory({
@@ -45,13 +48,16 @@ export class Mans extends Component {
             })
         };
     }
+
     componentWillUnmount() {
         authService.unsubscribe(this._subscription);
     }
+
     componentDidMount() {
         this._subscription = authService.subscribe(() => this.getData());
         this.getData();
     }
+
     async getData(){
         const token = await authService.getAccessToken();
 
@@ -69,12 +75,13 @@ export class Mans extends Component {
         }
         this.setState({loading: false, successful: false });
     }
+
     renderMansTable() {
         if (this.state.successful) {
             return (
                 <div>
                     <center><h1 id="tabelLabel" >Mans data</h1></center>
-                    <BootstrapTable bootstrap4 keyField='idm' columns={this.state.columns} data={this.state.data} pagination={this.state.pagination} /*filter={filterFactory}*/ />
+                    <BootstrapTable bootstrap4 keyField='idm' columns={this.state.columns} data={this.state.data} pagination={this.state.pagination} filter={(filterFactory())} />
                 </div>
             );
         }   
