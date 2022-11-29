@@ -31,11 +31,11 @@ export class NavMenu extends Component {
         this.state.user = user;
         if (isAuthenticated) {
             const token = await authService.getAccessToken();
-            const response = await fetch(`/api/userdata/get?username=${user.name}`, {
+            const response = await fetch(`/api/userdata/isAdminAsync?username=${user.name}`, {
                 headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
             });
             const data = await response.json();
-            this.setState({ isAdministrator: isAuthenticated });
+            this.setState({ isAdministrator: data });
         }
     }
     componentWillUnmount() {

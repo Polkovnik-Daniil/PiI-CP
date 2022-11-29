@@ -15,7 +15,7 @@ namespace WebApp.Controllers {
             this.signInManager = signInManager;
         }
         [HttpGet]
-        [Route("get")]
+        [Route("isAdminAsync")]
         public async Task<bool> IsAdminAsync(string username) {
             if (username != null || username != "") {
                 ApplicationUser user = await userManager.FindByEmailAsync(username);

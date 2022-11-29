@@ -29,7 +29,7 @@ namespace WebApp.Controllers {
                 bool IsAdmin = await userManager.IsInRoleAsync(user, "Administrator");
                 return IsAdmin ? db.GetList() : null;
             }
-            Response.StatusCode = 404;
+            Response.StatusCode = 204;
             return null;
         }
 
