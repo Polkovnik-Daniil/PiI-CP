@@ -16,8 +16,7 @@ export class Mans extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            token: null,
-            userName: "",
+            successful: false,
             data: [], loading: true, columns: [
                 { dataField: "idm", text: "IDM", sort: true/*, filter: textFilter()*/ }, //add filter into BootstrapTable
                 { dataField: "passport_number", text: "Passport Number", sort: true },
@@ -58,45 +57,34 @@ export class Mans extends Component {
 
         const [user] = await Promise.all([authService.getUser()]);
         this.state.userName = user.name;
-
-        // response = await fetch(`/api/userdata/isAdminAsync?username=${username}`, {
-        //     headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
-        // });
-        // const isAdministrator = await response.json();
-        
+       
         var response = await fetch(`api/mans/get?username=${user.name}`, {
             headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
         });
-        
+
         if(response.status !== 204) {
             const dataMans = await response.json();
+            this.setState({loading: false, data: dataMans, successful: true});
+            return;
         }
+        this.setState({loading: false, successful: false });
     }
-    async getUserRole(username) {
-        const token = await authService.getAccessToken();
-        const response = await fetch(`/api/userdata/isAdminAsync?username=${username}`, {
-            headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
-        });
-        const data = await response.json();
-        return data;
-    }
-    async renderMansTable(data, columns, pagination, username) {
-        const [isAdministrator] = await Promise.all([this.getUserRole(username)]);
-        if (isAdministrator) {
+    renderMansTable() {
+        if (this.state.successful) {
             return (
                 <div>
                     <center><h1 id="tabelLabel" >Mans data</h1></center>
-                    <BootstrapTable bootstrap4 keyField='idm' columns={columns} data={data} pagination={pagination} /*filter={filterFactory}*/ />
+                    <BootstrapTable bootstrap4 keyField='idm' columns={this.state.columns} data={this.state.data} pagination={this.state.pagination} /*filter={filterFactory}*/ />
                 </div>
             );
         }   
         return (<Navigate to="/notfound" />);
     }
-
+    
     render() {
         let contents = this.state.loading  
-            ? <p><em>Loading...</em></p>
-            : Mans.renderMansTable(this.state.data, this.state.columns, this.state.pagination, this.state.userName);
+        ? <p><em>Loading...</em></p>
+            : this.renderMansTable();
         return (
             <div>
                 {contents}
@@ -104,16 +92,25 @@ export class Mans extends Component {
         );
     }
 
-    async getMans() {
-        const token = await authService.getAccessToken();
-        const [user] = await Promise.all([authService.getUser()]);
-        this.state.userName = user.name;
-        const response = await fetch(`api/mans/get?username=${user.name}`, {
-            headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
-        });
-        const data = await response.json();
-        return data;
-    }
+    // async getUserRole(username) {
+    //     const token = await authService.getAccessToken();
+    //     const response = await fetch(`/api/userdata/isAdminAsync?username=${username}`, {
+    //         headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+    //     });
+    //     const data = await response.json();
+    //     return data;
+    // }
+
+    // async getMans() {
+    //     const token = await authService.getAccessToken();
+    //     const [user] = await Promise.all([authService.getUser()]);
+    //     this.state.userName = user.name;
+    //     const response = await fetch(`api/mans/get?username=${user.name}`, {
+    //         headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+    //     });
+    //     const data = await response.json();
+    //     return data;
+    // }
 }
 
 export default Mans;
