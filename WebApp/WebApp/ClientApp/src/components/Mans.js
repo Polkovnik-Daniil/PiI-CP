@@ -24,9 +24,9 @@ export class Mans extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            show: false,
             modalInfo: [],
             showModal: false,
-            show: false,
             successful: false,
             data: [], loading: true,
             columns: [
@@ -38,8 +38,8 @@ export class Mans extends Component {
                     dataField: "sex", text: "Sex", sort: true,
                     filter: selectFilter({
                         options: {
-                            2: 'false',
-                            1: 'true'
+                            false: 'false',
+                            true: 'true'
                         }
                     })
                 },
@@ -93,36 +93,39 @@ export class Mans extends Component {
         this.setState({ loading: false, successful: false });
     }
 
-    renderMansTable() {
+    renderMans() {
         if (this.state.successful) {
             //modalIndo = setModalInfo
             //showModal = setShowModal
             //show      = setShow
             //when user click on element table
 
-            const handleClose = () => {
-                this.state.show = false;
-            };
-
             const handleShow = () => {
                 this.state.show = true;
+                // this.setState({ show: true });
+            };
+
+            const handleClose = () => {
+                this.state.show = false;
+                // this.setState({ show: false });
             };
             //can be error
             const toggleTrueFalse = () => {
                 this.state.showModal = handleShow;
+                // this.setState({ showModal: handleShow });
             };
             //rendering modal window
             const ModalContent = () => {
                 return (
-                    <Modal show={this.state.show} onHide={handleClose}>
+                    <Modal show={this.state.show} onHide={handleClose()}>
                         <Modal.Header closeButton>
-                            <Modal.Title>{this.state.modalInfo.name}</Modal.Title>
+                            <Modal.Title>{this.state.modalInfo.idm}</Modal.Title>
                         </Modal.Header>
                         <ModalBody>
                             {/* realise function add, delete, update */}
                         </ModalBody>
                         <Modal.Footer>
-                            <Button variant='secondary' onClick={handleClose}>
+                            <Button variant='secondary' onClick={handleClose()}>
                                 Close
                             </Button>
                         </Modal.Footer>
@@ -146,7 +149,7 @@ export class Mans extends Component {
                         data={this.state.data} pagination={this.state.pagination} filter={(filterFactory())}
                         rowEvents={rowEvent} />
                     {/* rendering modal window */}
-                    {this.state.show ? <ModalContent /> : null} 
+                    {this.state.show ? <ModalContent /> : null}
                 </div>
             );
         }
@@ -156,33 +159,13 @@ export class Mans extends Component {
     render() {
         let contents = this.state.loading
             ? <p><em>Loading...</em></p>
-            : this.renderMansTable();
+            : this.renderMans();
         return (
             <div>
                 {contents}
             </div>
         );
     }
-
-    // async getUserRole(username) {
-    //     const token = await authService.getAccessToken();
-    //     const response = await fetch(`/api/userdata/isAdminAsync?username=${username}`, {
-    //         headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
-    //     });
-    //     const data = await response.json();
-    //     return data;
-    // }
-
-    // async getMans() {
-    //     const token = await authService.getAccessToken();
-    //     const [user] = await Promise.all([authService.getUser()]);
-    //     this.state.userName = user.name;
-    //     const response = await fetch(`api/mans/get?username=${user.name}`, {
-    //         headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
-    //     });
-    //     const data = await response.json();
-    //     return data;
-    // }
 }
 
 export default Mans;
