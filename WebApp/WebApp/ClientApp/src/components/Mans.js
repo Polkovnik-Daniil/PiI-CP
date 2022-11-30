@@ -8,24 +8,41 @@ import 'react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.min.css
 import authService from './api-authorization/AuthorizeService';
 import filterFactory, { selectFilter, textFilter } from 'react-bootstrap-table2-filter';
 import { Navigate } from 'react-router-dom';
+import { Modal, Button, ModalBody } from 'react-bootstrap';
 
+//const[showModal, setShowModal] = useState([]);
+//первый параметр в квадратных скобках говорит о том,
+//что это переменная будет передаваться в название метода
+//указанного вторым в квадратых скобках, значение которое
+//будет хранить переменная указано в useState([]), 
+//т.е. она хранит пустой массив 
 
 export class Mans extends Component {
+
     static displayName = Mans.name;
 
     constructor(props) {
         super(props);
         this.state = {
+            modalInfo: [],
+            showModal: false,
+            show: false,
             successful: false,
-            data: [], loading: true, columns: [
+            data: [], loading: true,
+            columns: [
                 { dataField: "idm", text: "IDM", sort: true, filter: textFilter() }, //add filter into BootstrapTable
-                { dataField: "passport_number", text: "Passport Number", sort: true, filter: textFilter()},
+                { dataField: "passport_number", text: "Passport Number", sort: true, filter: textFilter() },
                 { dataField: "name", text: "Name", sort: true, filter: textFilter() },
                 { dataField: "surname", text: "Surname", sort: true, filter: textFilter() },
-                { dataField: "sex", text: "Sex", sort: true, filter: selectFilter({ options: {
-                    2: 'true',
-                    1: 'false'
-                } }) },
+                {
+                    dataField: "sex", text: "Sex", sort: true,
+                    filter: selectFilter({
+                        options: {
+                            2: 'false',
+                            1: 'true'
+                        }
+                    })
+                },
             ],
             //add pagination into BootstrapTable
             pagination: paginationFactory({
@@ -58,39 +75,87 @@ export class Mans extends Component {
         this.getData();
     }
 
-    async getData(){
+    async getData() {
         const token = await authService.getAccessToken();
 
         const [user] = await Promise.all([authService.getUser()]);
         this.state.userName = user.name;
-       
+
         var response = await fetch(`api/mans/get?username=${user.name}`, {
             headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
         });
 
-        if(response.status !== 204) {
+        if (response.status !== 204) {
             const dataMans = await response.json();
-            this.setState({loading: false, data: dataMans, successful: true});
+            this.setState({ loading: false, data: dataMans, successful: true });
             return;
         }
-        this.setState({loading: false, successful: false });
+        this.setState({ loading: false, successful: false });
     }
 
     renderMansTable() {
         if (this.state.successful) {
+            //modalIndo = setModalInfo
+            //showModal = setShowModal
+            //show      = setShow
+            //when user click on element table
+
+            const handleClose = () => {
+                this.state.show = false;
+            };
+
+            const handleShow = () => {
+                this.state.show = true;
+            };
+            //can be error
+            const toggleTrueFalse = () => {
+                this.state.showModal = handleShow;
+            };
+            //rendering modal window
+            const ModalContent = () => {
+                return (
+                    <Modal show={this.state.show} onHide={handleClose}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>{this.state.modalInfo.name}</Modal.Title>
+                        </Modal.Header>
+                        <ModalBody>
+                            {/* realise function add, delete, update */}
+                        </ModalBody>
+                        <Modal.Footer>
+                            <Button variant='secondary' onClick={handleClose}>
+                                Close
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
+                );
+            };
+
+            const rowEvent = {
+                onClick: (e, row) => {
+                    console.log(row);
+                    this.state.modalInfo = row;
+                    toggleTrueFalse();
+                }
+            };
+
             return (
                 <div>
                     <center><h1 id="tabelLabel" >Mans data</h1></center>
-                    <BootstrapTable bootstrap4 keyField='idm' columns={this.state.columns} data={this.state.data} pagination={this.state.pagination} filter={(filterFactory())} />
+                    {/* rendering table */}
+                    <BootstrapTable bootstrap4 keyField='idm' columns={this.state.columns}
+                        data={this.state.data} pagination={this.state.pagination} filter={(filterFactory())}
+                        rowEvents={rowEvent} />
+                    {/* rendering modal window */}
+                    {this.state.show ? <ModalContent /> : null} 
                 </div>
             );
-        }   
+        }
         return (<Navigate to="/notfound" />);
     }
-    
+
     render() {
-        let contents = this.state.loading  
-        ? <p><em>Loading...</em></p>
+        let contents = this.state.loading
+            ? <p><em>Loading...</em></p>
             : this.renderMansTable();
         return (
             <div>
