@@ -3,7 +3,7 @@ import { NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import authService from './AuthorizeService';
 import { ApplicationPaths } from './ApiAuthorizationConstants';
-import Mans from '../Mans';
+import Mans from '../Mans/Mans';
 import { NavMenu } from '../NavMenu';
 
 export class LoginMenu extends Component {
@@ -30,6 +30,10 @@ export class LoginMenu extends Component {
             isAuthenticated,
             userName: user && user.name
         });
+        localStorage.removeItem("user");
+        localStorage.setItem("isAuthenticated");
+        //localStorage.setItem("user", JSON.stringify(user));
+        //localStorage.setItem("isAuthenticated", this.state.isAuthenticated);
     }
     render() {
         const { isAuthenticated, userName } = this.state;

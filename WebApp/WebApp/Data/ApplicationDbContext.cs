@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using WebApp.Models;
 using static IdentityModel.ClaimComparer;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace WebApp.Data {
     public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser> {
@@ -19,5 +20,9 @@ namespace WebApp.Data {
             _options = options;
             _operationalStoreOptions = operationalStoreOptions;
         }
+
+        //protected override void OnModelCreating(ModelBuilder modelBuilder) {
+        //    modelBuilder.Entity<Tickets>().HasNoKey();
+        //}
     }
 }

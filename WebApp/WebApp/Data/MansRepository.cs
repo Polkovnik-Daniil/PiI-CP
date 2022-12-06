@@ -13,7 +13,7 @@ namespace WebApp.Data {
             return db.Mans;
         }
 
-        public Mans GetElement(int id) {
+        public Mans GetElement(string id) {
             return db.Mans.Find(id);
         }
 
@@ -23,16 +23,17 @@ namespace WebApp.Data {
 
         public void Update(Mans man) {
             db.Entry(man).State = EntityState.Modified;
+            //db.Mans.Where(x => x.IDM == man.IDM ? x = man: x) ;
         }
 
-        public void Delete(int id) {
+        public void Delete(string id) {
             Mans mans = db.Mans.Find(id);
             if (mans != null)
                 db.Mans.Remove(mans);
         }
 
         public void Save() {
-            db.SaveChanges();
+            try { db.SaveChanges(); } catch(Exception excp) { Console.WriteLine(excp.Message); }
         }
 
         private bool disposed = false;

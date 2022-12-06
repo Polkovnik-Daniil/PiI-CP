@@ -1,6 +1,6 @@
 CREATE TABLE Airplanes 
 (
-  [IDA] [INTEGER] NOT NULL,
+  [IDA] [nvarchar](40) NOT NULL,
   [Name_airplane] [nvarchar](40) NOT NULL,
   [Number_places] [INTEGER],
   [Creator] [nvarchar](40) NOT NULL,

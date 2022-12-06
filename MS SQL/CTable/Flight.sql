@@ -1,7 +1,7 @@
 CREATE TABLE Flights
 (
-  [FID] [INTEGER] NOT NULL,
-  [IDA] [INTEGER] NOT NULL,
+  [FID] [nvarchar](40) NOT NULL,
+  [IDA] [nvarchar](40) NOT NULL,
   [Date_and_Time_of_Departure] date NOT NULL,
   [Date_and_Time_of_Arrival] date NOT NULL,
   [Departure_Point] [nvarchar](40) NOT NULL,
@@ -10,7 +10,7 @@ CREATE TABLE Flights
   [Arrival_Airport] [nvarchar](40) NOT NULL,
   [Status] [nvarchar](40) NOT NULL,
   [Number_Free_places] [INTEGER] NOT NULL,
-  [IDT] [int] NOT NULL,						--ID table Tickets flight
+  [IDT] [nvarchar](40) NOT NULL,						--ID table Tickets flight
   CONSTRAINT idf_pk PRIMARY KEY ([FID]),
   CONSTRAINT fk_ida
 	FOREIGN KEY ([IDA])

@@ -302,26 +302,26 @@ namespace WebApp.Data.Migrations
 
             modelBuilder.Entity("WebApp.Models.Airplanes", b =>
                 {
-                    b.Property<int>("IDA")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IDA"), 1L, 1);
+                    b.Property<string>("IDA")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Creator")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name_Airplanes")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Number_places")
                         .HasColumnType("int");
 
                     b.HasKey("IDA");
 
-                    b.ToTable("_airplanes");
+                    b.ToTable("Airplanes");
                 });
 
             modelBuilder.Entity("WebApp.Models.ApplicationUser", b =>
@@ -391,15 +391,14 @@ namespace WebApp.Data.Migrations
 
             modelBuilder.Entity("WebApp.Models.Flights", b =>
                 {
-                    b.Property<int>("FID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FID"), 1L, 1);
+                    b.Property<string>("FID")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Arrival_Airport")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("Date_and_Time_of_Arrival")
                         .HasColumnType("datetime2");
@@ -409,76 +408,87 @@ namespace WebApp.Data.Migrations
 
                     b.Property<string>("Departure_Airport")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Departure_Point")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("IDA")
-                        .HasColumnType("int");
+                    b.Property<string>("IDA")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("IDT")
-                        .HasColumnType("int");
+                    b.Property<string>("IDT")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Number_Free_places")
                         .HasColumnType("int");
 
                     b.Property<string>("Point_of_Arrival")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("FID");
 
-                    b.ToTable("_flights");
+                    b.ToTable("Flights");
                 });
 
             modelBuilder.Entity("WebApp.Models.Mans", b =>
                 {
-                    b.Property<int>("IDM")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IDM"), 1L, 1);
+                    b.Property<string>("IDM")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Passport_number")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("Sex")
                         .HasColumnType("bit");
 
                     b.Property<string>("Surname")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("IDM");
 
-                    b.ToTable("_mans");
+                    b.ToTable("Mans");
                 });
 
             modelBuilder.Entity("WebApp.Models.Tickets", b =>
                 {
-                    b.Property<int>("IDF")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("IDF")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IDF"), 1L, 1);
+                    b.Property<string>("MID")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("MID")
-                        .HasColumnType("int");
+                    b.Property<string>("email")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("IDF");
-
-                    b.ToTable("_tickets");
+                    b.ToTable("Tickets");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

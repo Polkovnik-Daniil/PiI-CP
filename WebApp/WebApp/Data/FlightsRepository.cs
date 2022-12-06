@@ -13,7 +13,7 @@ namespace WebApp.Data {
             return db.Flights;
         }
 
-        public Flights GetElement(int id) {
+        public Flights GetElement(string id) {
             return db.Flights.Find(id);
         }
 
@@ -25,7 +25,7 @@ namespace WebApp.Data {
             db.Entry(flight).State = EntityState.Modified;
         }
 
-        public void Delete(int id) {
+        public void Delete(string id) {
             Flights flight = db.Flights.Find(id);
             if (flight != null)
                 db.Flights.Remove(flight);

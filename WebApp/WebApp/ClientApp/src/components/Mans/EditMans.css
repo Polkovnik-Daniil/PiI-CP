@@ -1,0 +1,16 @@
+﻿div#main{
+    margin-right: 35%;
+    margin-left: 35%;
+    margin-top: 5%;
+    /* border-radius: 10%;    
+    background-color: antiquewhite; */
+}
+div#butt{
+    /* делает меню по центру */
+    justify-content: center;
+}
+input {
+    margin-right: 3%;
+    margin-top: 1%;
+    margin-bottom: 0.2%;
+}

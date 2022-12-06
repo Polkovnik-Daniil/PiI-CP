@@ -21,17 +21,17 @@ namespace WebApp.Controllers {
 
         [HttpGet]
         [Route("getId")]
-        public Flights GetId(int id) {
+        public Flights GetId(string id) {
             return db.GetElement(id);
         }
 
         [HttpPost]
         [Route("create")]
-        public void Create(int FID, int IDA, DateTime Date_and_Time_of_Departure,
+        public void Create(string FID, string IDA, DateTime Date_and_Time_of_Departure,
                            DateTime Date_and_Time_of_Arrival, string Departure_Point,
                            string Departure_Airport, string Point_of_Arrival,
                            string Arrival_Airport, string Status,
-                           int Number_Free_places, int IDT) {
+                           int Number_Free_places, string IDT) {
             db.Create(new Flights() {
                 FID = FID,
                 IDA = IDA,
@@ -49,17 +49,17 @@ namespace WebApp.Controllers {
 
         [HttpGet]
         [Route("delete")]
-        public void Delete(int id) {
+        public void Delete(string id) {
             db.Delete(id);
         }
 
         [HttpGet]
         [Route("update")]
-        public void Update(int FID, int IDA, DateTime Date_and_Time_of_Departure,
+        public void Update(string FID, string IDA, DateTime Date_and_Time_of_Departure,
                            DateTime Date_and_Time_of_Arrival, string Departure_Point,
                            string Departure_Airport, string Point_of_Arrival,
                            string Arrival_Airport, string Status,
-                           int Number_Free_places, int IDT) {
+                           int Number_Free_places, string IDT) {
             db.Create(new Flights() {
                 FID = FID,
                 IDA = IDA,

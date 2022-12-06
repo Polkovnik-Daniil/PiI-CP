@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Data;
 using WebApp.Models;
@@ -9,38 +10,72 @@ namespace WebApp.Controllers {
     [Route("api/[controller]/")]
     public class AirplanesController : Controller {
         IRepository<Airplanes> db;
-        public AirplanesController() {
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
+        public AirplanesController(UserManager<ApplicationUser> userManager,
+                                   SignInManager<ApplicationUser> signInManager) {
             db = new AirplanesRepository();
+            this.userManager = userManager;
+            this.signInManager = signInManager;
+        }
+
+        [HttpGet]
+        [Route("canaccess")]
+        public async Task<bool> CanAccess(string username) {
+            bool IsAdmin = await IsAdminAsync(username);
+            return IsAdmin;
+        }
+        private async Task<bool> IsAdminAsync(string username) {
+            if (username != null || username != "") {
+                ApplicationUser user = await userManager.FindByEmailAsync(username);
+                // Get the roles for the user
+                bool IsAdmin = await userManager.IsInRoleAsync(user, "Administrator");
+                return IsAdmin;
+            }
+            return false;
         }
 
         [HttpGet]
         [Route("get")]
-        public IEnumerable<Airplanes> Get() {
-            return db.GetList();
+        public async Task<IEnumerable<Airplanes>?> GetAsync(string username) {
+            bool IsAdmin = await IsAdminAsync(username);
+            return IsAdmin ? db.GetList() : null;
         }
 
         [HttpGet]
-        [Route("getId")]
-        public Airplanes GetId(int id) {
-            return db.GetElement(id);
-        }
-
-        [HttpPost]
         [Route("create")]
-        public void Create(int ida, string Name_Airplane, int Number_places, string Creator) {
-            db.Create(new Airplanes() { IDA = ida, Name_Airplanes = Name_Airplane, Number_places = Number_places, Creator = Creator });
+        public async Task<bool> Create(string username, string ida, string name_airplane, int number_places, string creator) {
+            bool IsAdmin = await IsAdminAsync(username);
+            if (IsAdmin) {
+                db.Create(new Airplanes() { IDA = ida, Name_Airplanes = name_airplane, Number_places = number_places, Creator = creator });
+                db.Save();
+                return true;
+            }
+            return false;
         }
 
         [HttpGet]
         [Route("delete")]
-        public void Delete(int id) {
-            db.Delete(id);
+        public async Task<bool> Delete(string username, string idm) {
+            bool IsAdmin = await IsAdminAsync(username);
+            if (IsAdmin) {
+                db.Delete(idm);
+                db.Save();
+                return true;
+            }
+            return false;
         }
 
         [HttpGet]
         [Route("update")]
-        public void Update(int ida, string Name_Airplane, int Number_places, string Creator) {
-            db.Update(new Airplanes() { IDA = ida, Name_Airplanes = Name_Airplane, Number_places = Number_places, Creator = Creator });
+        public async Task<bool> Update(string username, string ida, string name_airplane, int number_places, string creator) {
+            bool IsAdmin = await IsAdminAsync(username);
+            if (IsAdmin) {
+                db.Update(new Airplanes() { IDA = ida, Name_Airplanes = name_airplane, Number_places = number_places, Creator = creator });
+                db.Save();
+                return true;
+            }
+            return false;
         }
     }
 }

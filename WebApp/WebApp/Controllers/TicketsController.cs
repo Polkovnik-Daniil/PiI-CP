@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
@@ -10,37 +11,47 @@ namespace WebApp.Controllers {
     [Route("api/[controller]/")]
     public class TicketsController : Controller {
         IRepository<Tickets> db;
-        public TicketsController() {
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
+        public TicketsController(UserManager<ApplicationUser> userManager,
+                              SignInManager<ApplicationUser> signInManager) {
             db = new TicketsRepository();
+            this.userManager = userManager;
+            this.signInManager = signInManager;
+        }
+
+        private async Task<bool> IsAdminAsync(string username) {
+            if (username != null || username != "") {
+                ApplicationUser user = await userManager.FindByEmailAsync(username);
+                // Get the roles for the user
+                bool IsAdmin = await userManager.IsInRoleAsync(user, "Administrator");
+                return IsAdmin;
+            }
+            return false;
         }
 
         [HttpGet]
         [Route("get")]
-        public IEnumerable<Tickets> Get() {
-            return db.GetList();
+        public async Task<IEnumerable<Tickets>?> Get(string username) {
+            bool IsAdmin = await IsAdminAsync(username);
+            return IsAdmin ? db.GetList() : db.GetList().Where(x=>x.email == username);
         }
 
         [HttpGet]
-        [Route("getId")]
-        public Tickets GetId(int id) {
-            return db.GetElement(id);
-        }
-
-        [HttpPost]
         [Route("create")]
-        public void Create(int IDF, int MID) {
-            db.Create(new Tickets() { IDF = IDF, MID = MID});
+        public void Create(string username,string IDF, string MID) {
+            db.Create(new Tickets() { IDF = IDF, MID = MID, email = username});
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("delete")]
-        public void Delete(int id) {
+        public void Delete(string id) {
             db.Delete(id);
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("update")]
-        public void Update(int IDF, int MID) {
+        public void Update(string IDF, string MID) {
             db.Update(new Tickets() { IDF = IDF, MID = MID });
         }
     }

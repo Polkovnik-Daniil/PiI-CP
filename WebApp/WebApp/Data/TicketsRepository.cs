@@ -14,7 +14,7 @@ namespace WebApp.Data {
             return db.Tickets;
         }
 
-        public Tickets GetElement(int id) {
+        public Tickets GetElement(string id) {
             return db.Tickets.Find(id);
         }
 
@@ -26,7 +26,7 @@ namespace WebApp.Data {
             db.Entry(ticket).State = EntityState.Modified;
         }
 
-        public void Delete(int id) {
+        public void Delete(string id) {
             Tickets ticket = db.Tickets.Find(id);
             if (ticket != null)
                 db.Tickets.Remove(ticket);

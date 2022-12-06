@@ -20,7 +20,6 @@ export class AuthorizeService {
         if (this._user && this._user.profile) {
             return this._user.profile;
         }
-
         await this.ensureUserManagerInitialized();
         const user = await this.userManager.getUser();
         return user && user.profile;

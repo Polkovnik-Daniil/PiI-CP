@@ -15,7 +15,7 @@ const context = [
     "/ApplyDatabaseMigrations",
     "/_framework",
     `${prefix}/about`,
-    `${prefix}/airplane`,
+    `${prefix}/airplanes`,
     `${prefix}/flights`,
     `${prefix}/mans`,
     `${prefix}/tickets`,

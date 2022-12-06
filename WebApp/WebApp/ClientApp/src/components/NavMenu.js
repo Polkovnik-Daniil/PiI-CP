@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { LoginMenu } from './api-authorization/LoginMenu';
 import './NavMenu.css';
 import authService from './api-authorization/AuthorizeService';
-import Mans from './Mans';
+import Mans from './Mans/Mans';
 
 export class NavMenu extends Component {
     static displayName = NavMenu.name;
@@ -16,7 +16,7 @@ export class NavMenu extends Component {
         this.state = {
             collapsed: true,
             isAuthenticated: false,
-            isAdministrator: false
+            canAccess: false
         };
     }
 
@@ -25,25 +25,28 @@ export class NavMenu extends Component {
             collapsed: !this.state.collapsed
         });
     }
-    async getUserRole() {
+    async canAccess() {
         const [isAuthenticated, user] = await Promise.all([authService.isAuthenticated(), authService.getUser()]);
         this.state.isAuthenticated = isAuthenticated;
         this.state.user = user;
         if (isAuthenticated) {
             const token = await authService.getAccessToken();
-            const response = await fetch(`/api/userdata/isAdminAsync?username=${user.name}`, {
+            //
+            const response = await fetch(`/api/userdata/canaccess?username=${user.name}`, {
                 headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
             });
             const data = await response.json();
-            this.setState({ isAdministrator: data });
+            this.setState({ canAccess: data });
         }
+        localStorage.setItem("isAuthenticated", isAuthenticated);
+        localStorage.removeItem("isAuthenticated");
     }
     componentWillUnmount() {
         authService.unsubscribe(this._subscription);
     }
     componentDidMount() {
-        this._subscription = authService.subscribe(() => this.getUserRole());
-        this.getUserRole();
+        this._subscription = authService.subscribe(() => this.canAccess());
+        this.canAccess();
     }
     render() {
         return (
@@ -56,18 +59,32 @@ export class NavMenu extends Component {
                             <NavItem>
                                 <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
                             </NavItem>
-                            <NavItem>
-                                <NavLink tag={Link} className="text-dark" to="/counter">Counter</NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink tag={Link} className="text-dark" to="/fetch-data">Fetch data</NavLink>
-                            </NavItem>
                             {
-                                this.state.isAdministrator ?
-                                    < NavItem >
-                                        <NavLink tag={Link} className="text-dark" to="/mans">Mans</NavLink>
-                                    </NavItem> : null
+                                this.state.canAccess ?
+                                    <>
+                                        < NavItem >
+                                            <NavLink tag={Link} className="text-dark" to="/mans">Mans</NavLink>
+                                        </NavItem>
+                                        < NavItem >
+                                            <NavLink tag={Link} className="text-dark" to="/airplanes">Airplanes</NavLink>
+                                        </NavItem>
+                                    </> : null
                             }
+                            {
+                                this.state.isAuthenticated ?
+                                    (this.state.canAccess ?
+                                        < NavItem >
+                                            <NavLink tag={Link} className="text-dark" to="/tickets/edit">Ticekts</NavLink>
+                                        </NavItem>
+                                        :
+                                        < NavItem >
+                                            <NavLink tag={Link} className="text-dark" to="/tickets">Ticekts</NavLink>
+                                        </NavItem>)
+                                    : null
+                            }
+                            < NavItem >
+                                <NavLink tag={Link} className="text-dark" to="/tickets">Flights</NavLink>
+                            </NavItem>
                             <LoginMenu>
                             </LoginMenu>
                         </ul>
