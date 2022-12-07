@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography;
 using WebApp.Data;
@@ -9,20 +10,31 @@ namespace WebApp.Controllers {
     [Route("api/[controller]/")]
     public class FlightsController : Controller {
         IRepository<Flights> db;
-        public FlightsController() {
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
+        public FlightsController(UserManager<ApplicationUser> userManager,
+                              SignInManager<ApplicationUser> signInManager) {
             db = new FlightsRepository();
+            this.userManager = userManager;
+            this.signInManager = signInManager;
+        }
+
+
+        [HttpGet]
+        [Route("canaccess")]
+        public async Task<bool> IsAdminAsync(string username) {
+            if (username != null || username != "") {
+                ApplicationUser user = await userManager.FindByEmailAsync(username);
+                bool IsAdmin = await userManager.IsInRoleAsync(user, "Administrator");                 // Get the roles for the user
+                return IsAdmin;
+            }
+            return false;
         }
 
         [HttpGet]
         [Route("get")]
         public IEnumerable<Flights> Get() {
             return db.GetList();
-        }
-
-        [HttpGet]
-        [Route("getId")]
-        public Flights GetId(string id) {
-            return db.GetElement(id);
         }
 
         [HttpPost]
@@ -43,7 +55,6 @@ namespace WebApp.Controllers {
                 Status = Status,
                 Departure_Airport = Departure_Airport,
                 Number_Free_places = Number_Free_places,
-                IDT = IDT
             });
         }
 
@@ -71,7 +82,6 @@ namespace WebApp.Controllers {
                 Status = Status,
                 Departure_Airport = Departure_Airport,
                 Number_Free_places = Number_Free_places,
-                IDT = IDT
             });
         }
     }

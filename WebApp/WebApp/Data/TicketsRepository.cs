@@ -32,6 +32,11 @@ namespace WebApp.Data {
                 db.Tickets.Remove(ticket);
         }
 
+        public void Delete(Tickets ticket) {
+            if (ticket != null)
+                db.Tickets.Remove(ticket);
+        }
+
         public void Save() {
             db.SaveChanges();
         }

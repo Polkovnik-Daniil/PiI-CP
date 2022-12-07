@@ -102,7 +102,7 @@ export class Airplanes extends Component {
 
             return (
                 <div>
-                    <center><h1 id="tabelLabel" >Mans data</h1></center>
+                    <center><h1 id="tabelLabel" >Airplanes data</h1></center>
                     {/* rendering table */}
                     <BootstrapTable bootstrap4 keyField='ida' columns={this.state.columns}
                         data={this.state.data} pagination={this.state.pagination} filter={(filterFactory())}

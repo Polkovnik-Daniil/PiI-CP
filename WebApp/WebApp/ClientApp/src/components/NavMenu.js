@@ -74,7 +74,7 @@ export class NavMenu extends Component {
                                 this.state.isAuthenticated ?
                                     (this.state.canAccess ?
                                         < NavItem >
-                                            <NavLink tag={Link} className="text-dark" to="/tickets/edit">Ticekts</NavLink>
+                                            <NavLink tag={Link} className="text-dark" to="/tickets">Ticekts</NavLink>
                                         </NavItem>
                                         :
                                         < NavItem >
@@ -83,7 +83,7 @@ export class NavMenu extends Component {
                                     : null
                             }
                             < NavItem >
-                                <NavLink tag={Link} className="text-dark" to="/tickets">Flights</NavLink>
+                                <NavLink tag={Link} className="text-dark" to="/flights">Flights</NavLink>
                             </NavItem>
                             <LoginMenu>
                             </LoginMenu>

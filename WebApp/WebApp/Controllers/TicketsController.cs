@@ -11,11 +11,13 @@ namespace WebApp.Controllers {
     [Route("api/[controller]/")]
     public class TicketsController : Controller {
         IRepository<Tickets> db;
+        IRepository<Flights> dbf;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
         public TicketsController(UserManager<ApplicationUser> userManager,
                               SignInManager<ApplicationUser> signInManager) {
             db = new TicketsRepository();
+            dbf = new FlightsRepository();
             this.userManager = userManager;
             this.signInManager = signInManager;
         }
@@ -34,25 +36,45 @@ namespace WebApp.Controllers {
         [Route("get")]
         public async Task<IEnumerable<Tickets>?> Get(string username) {
             bool IsAdmin = await IsAdminAsync(username);
-            return IsAdmin ? db.GetList() : db.GetList().Where(x=>x.email == username);
+            return IsAdmin ? db.GetList() : db.GetList().Where(x => x.email == username);
         }
 
         [HttpGet]
         [Route("create")]
-        public void Create(string username,string IDF, string MID) {
-            db.Create(new Tickets() { IDF = IDF, MID = MID, email = username});
+        public bool Create(string username, string id, string idf, string mid) {
+            //dbf.GetList().Where(x => x.FID == IDF && x.Number_Free_places > 0).FirstOrDefault().Number_Free_places -= 1;
+            //dbf - Repository Flights
+            Flights? isExist = dbf.GetList().FirstOrDefault(x => x.FID == idf && x.Number_Free_places > 0);
+            if (isExist != null) {
+                dbf.GetList().FirstOrDefault(x => x.FID == idf && x.Number_Free_places > 0).Number_Free_places -= 1;
+                db.Create(new Tickets() { ID = id, IDF = idf, MID = mid, email = username });
+                db.Save();
+                return true;
+            }
+            return false;
         }
 
         [HttpGet]
         [Route("delete")]
-        public void Delete(string id) {
-            db.Delete(id);
+        public bool Delete(string username, string id, string idf, string mid) {
+            Tickets? isExist = db.GetList().FirstOrDefault(x => x.ID == id);
+            if (isExist != null) {
+                dbf.GetList().FirstOrDefault(x => x.FID == idf && x.Number_Free_places > 0).Number_Free_places += 1;
+                db.Delete(id);
+                return true;
+            }
+            return false;
         }
 
         [HttpGet]
         [Route("update")]
-        public void Update(string IDF, string MID) {
-            db.Update(new Tickets() { IDF = IDF, MID = MID });
+        public bool Update(string username, string id, string idf, string mid) {
+            Tickets? isExist = db.GetList().FirstOrDefault(x => x.ID == id);
+            if (isExist != null) {
+                db.Update(new Tickets() { email = username, ID = id, IDF = idf, MID = mid });
+                return true;
+            }
+            return false;
         }
     }
 }

@@ -8,7 +8,6 @@ import 'react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.min.css
 import authService from '../api-authorization/AuthorizeService';
 import filterFactory, { selectFilter, textFilter } from 'react-bootstrap-table2-filter';
 import { Navigate } from 'react-router-dom';
-import EditMans from './EditMans';
 
 
 //const[showModal, setShowModal] = useState([]);

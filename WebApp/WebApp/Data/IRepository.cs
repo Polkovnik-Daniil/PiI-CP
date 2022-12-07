@@ -1,4 +1,6 @@
-﻿namespace WebApp.Data {
+﻿using WebApp.Models;
+
+namespace WebApp.Data {
     interface IRepository<T> : IDisposable
             where T : class {
         IEnumerable<T> GetList(); // получение всех объектов

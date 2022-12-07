@@ -421,11 +421,6 @@ namespace WebApp.Data.Migrations
                         .HasMaxLength(450)
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("IDT")
-                        .IsRequired()
-                        .HasMaxLength(450)
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int>("Number_Free_places")
                         .HasColumnType("int");
 
@@ -475,6 +470,10 @@ namespace WebApp.Data.Migrations
 
             modelBuilder.Entity("WebApp.Models.Tickets", b =>
                 {
+                    b.Property<string>("ID")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("IDF")
                         .IsRequired()
                         .HasMaxLength(450)
@@ -487,6 +486,8 @@ namespace WebApp.Data.Migrations
                     b.Property<string>("email")
                         .HasMaxLength(450)
                         .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ID");
 
                     b.ToTable("Tickets");
                 });

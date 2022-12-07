@@ -1,14 +1,15 @@
-import ApiAuthorzationRoutes from './components/api-authorization/ApiAuthorizationRoutes';
-import { FetchData } from "./components/FetchData";
-import { NotFound } from "./components/NotFound";
-import { Counter } from "./components/Counter";
 import { Home } from "./components/Home";
+import { NotFound } from "./components/NotFound";
 import Airplanes from './components/Airplanes/Airplanes';
 import EditAirplanes from './components/Airplanes/EditAirplanes';
-
 import Mans from './components/Mans/Mans';
 import EditMans from './components/Mans/EditMans';
 import { Tickets } from './components/Tickets/Tickets';
+import { EditTickets } from './components/Tickets/EditTickets';
+import Flights from './components/Flights/Flights';
+import EditFlights from './components/Flights/EditFlights';
+import ApiAuthorzationRoutes from './components/api-authorization/ApiAuthorizationRoutes';
+
 
 
 
@@ -23,14 +24,14 @@ const AppRoutes = [
         element: <EditAirplanes />
     },
     {
-        path: '/mans',
-        requireAuth: true,
-        element: <Mans />
-    },
-    {
         path: '/airplanes',
         requireAuth: true,
         element: <Airplanes />
+    },
+    {
+        path: '/mans',
+        requireAuth: true,
+        element: <Mans />
     },
     {
         path: '/mans/edit',
@@ -41,6 +42,21 @@ const AppRoutes = [
         path: '/tickets',
         requireAuth: true,
         element: <Tickets />
+    },
+    {
+        path: '/tickets/edit',
+        requireAuth: true,
+        element: <EditTickets />
+    },
+    {
+        path: '/flights',
+        requireAuth: false,
+        element: <Flights />
+    },
+    {
+        path: '/flights/edit',
+        requireAuth: true,
+        element: <EditFlights />
     },
     {
         path: '*',
