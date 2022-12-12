@@ -42,13 +42,12 @@ export class EditTickets extends Component {
             buttonName: null
         };
 
-        const data = JSON.parse(localStorage.getItem("REA"));
+        const data = JSON.parse(localStorage.getItem("DT"));
         if (data !== null) {
-            this.state.ida = data.ida;
-            this.state.name_airplane = data.name_Airplanes;
-            this.state.number_places = data.number_places;
-            this.state.surname = data.surname;
-            this.state.creator = data.creator;
+            this.state.id = data.id;
+            this.state.idf = data.idf;
+            this.state.mid = data.mid;
+            this.state.email = data.email;
             this.state.buttonName = "Сохранить";
             return;
         }
@@ -85,10 +84,10 @@ export class EditTickets extends Component {
             }
             //On click button reset
             const Reset = () => {
-                this.state.ida = "";
-                this.state.name_airplane = "";
-                this.state.number_places = "";
-                this.state.creator = "";
+                this.state.id = "";
+                this.state.idf = "";
+                this.state.mid = "";
+                this.state.email = "";
                 this.setState({});
             };
             //when click 
@@ -97,18 +96,28 @@ export class EditTickets extends Component {
                 var path = "";
                 switch (this.state.operation) {
                     case operation.create:
-                        path = `create?username=${username}&ida=${this.state.ida}&name_airplane=${this.state.name_airplane}&number_places=${this.state.number_places}&creator=${this.state.creator}`;
+                        path = `create?username=${username}&id=${this.state.id}&idf=${this.state.idf}&mid=${this.state.mid}&email=${this.state.email}`;
                         break;
                     case operation.delete:
-                        path = `delete?username=${username}&ida=${this.state.ida}`;
+                        path = `delete?username=${username}&id=${this.state.id}`;
                         break;
                     case operation.update:
-                        path = `update?username=${username}&ida=${this.state.ida}&name_airplane=${this.state.name_airplane}&number_places=${this.state.number_places}&creator=${this.state.creator}`;
+                        path = `update?username=${username}&id=${this.state.id}&idf=${this.state.idf}&mid=${this.state.mid}&email=${this.state.email}`;
                         break;
+                    //case operation.createv2:
+                    //    path = 'createv2';
+                    //    break;
                 }
                 const token = await authService.getAccessToken();
-                var response = await fetch(`api/airplanes/${path}`, {
-                    headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+                //везде где есть // надо удалить если не планируешь перейти на эту технологию
+                var method = this.state.operation === operation.create ? 'POST' : this.state.operation === operation.delete ? 'DELETE' : 'PUT';
+                var response = await fetch(`api/tickets/${path}`, {
+                    //method: method, //
+                    headers: !token ? {} : {
+                        'Authorization': `Bearer ${token}`//,
+                        //'Content-Type': 'application/json',//
+                    },
+                    //body: JSON.stringify({ ID: this.state.id, IDF: this.state.idf, MID: this.state.mid, email: this.state.email })//
                 });
                 var text;
                 if (response.status === 200) {
@@ -130,53 +139,53 @@ export class EditTickets extends Component {
                 toServer();
             };
 
-            const idaOC = (event) => {     //onChange
-                this.setState({ ida: event.target.value });
+            const idOC = (event) => {     //onChange
+                this.setState({ id: event.target.value });
             };
 
-            const name_aiplaneOC = (event) => {     //onChange
+            const idfOC = (event) => {     //onChange
                 this.setState({});
-                this.state.name_airplane = event.target.value;
+                this.state.idf = event.target.value;
             };
 
-            const number_placesOC = (event) => {     //onChange
+            const midOC = (event) => {     //onChange
                 var as = event.target.value !== '';
                 if (event.target.value.length < 4 && event.target.value!='') {
-                    this.setState({ number_places: event.target.value });
+                    this.setState({ mid: event.target.value });
                 }
             };
 
-            const creatorOC = (event) => {     //onChange
-                this.setState({ creator: event.target.value });
+            const emailOC = (event) => {     //onChange
+                this.setState({ email: event.target.value });
             };
 
             const GUIDOC = () => {          
-                this.setState({ ida: GUID() });
+                this.setState({ id: GUID() });
             };
 
             return (
                 <div id="main">
                     <div>
                         <p>
-                            <b>ID самолета</b>
+                            <b>ID билета</b>
                             <br></br>
-                            <input type="text" size="40" placeholder="ID самолета" onChange={idaOC} value={this.state.ida} readOnly />
+                            <input type="text" size="40" placeholder="ID билета" onChange={idOC} value={this.state.id} readOnly />
                             <input type="submit" size="20" value="Генерировать" onClick={GUIDOC} />
                         </p>
                         <p>
-                            <b>Название самолета</b>
+                            <b>ID рейса</b>
                             <br></br>
-                            <input type="text" size="40" placeholder="Название самолета" onChange={name_aiplaneOC} value={this.state.name_airplane} />
+                            <input type="text" size="40" placeholder="ID рейса" onChange={idfOC} value={this.state.idf} />
                         </p>
                         <p>
-                            <b>Количество мест</b>
+                            <b>ID человека</b>
                             <br></br>
-                            <input type="number" min="1" max="600" maxlength="5" id="dva" size="60" placeholder="Количество мест" onChange={number_placesOC} value={this.state.number_places} />
+                            <input type="text" size="40" placeholder="ID человека" onChange={midOC} value={this.state.mid} />
                         </p>
                         <p>
-                            <b>Производитель</b>
+                            <b>Почта</b>
                             <br></br>
-                            <input type="text" size="40" placeholder="Производитель" onChange={creatorOC} value={this.state.creator} />
+                            <input type="text" size="40" placeholder="Почта" onChange={emailOC} value={this.state.email} />
                         </p>
                         <div id="butt">
                             <input type="submit" value={this.state.buttonName} onClick={CreateOrUpdate}></input>
@@ -198,9 +207,6 @@ export class EditTickets extends Component {
         let contents = this.state.loading
             ? <p><em>Loading...</em></p>
             : this.renderEditMans();
-        if (!this.state.loading) {
-            localStorage.removeItem("REA");
-        }
         return (
             <div>
                 {contents}

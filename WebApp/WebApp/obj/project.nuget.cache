@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "qZ49vYLAhqQ90AenXZnsTkNnlxM1zyIi+7jtbxJhDfUBf8RRTl+yIQH7jYqZdqO921DHmNLFZ701oioRI3wiUw==",
+  "dgSpecHash": "tjc8Lb/OJDu7KY8dBRf5I7db1NUxOqYcQ6uXkdrsZhfdu0eaxQJ/uoimlAb0ZkV4IuFCrrwNuVMSnVpbcHiAOg==",
   "success": true,
   "projectFilePath": "D:\\Danik\\7 semester\\PiI\\Course Project\\WebApp\\WebApp\\WebApp.csproj",
   "expectedPackageFiles": [
@@ -56,6 +56,7 @@
     "C:\\Users\\ADMINISTRATOR\\.nuget\\packages\\microsoft.identitymodel.tokens\\6.10.0\\microsoft.identitymodel.tokens.6.10.0.nupkg.sha512",
     "C:\\Users\\ADMINISTRATOR\\.nuget\\packages\\microsoft.netcore.platforms\\3.1.0\\microsoft.netcore.platforms.3.1.0.nupkg.sha512",
     "C:\\Users\\ADMINISTRATOR\\.nuget\\packages\\microsoft.netcore.targets\\1.1.0\\microsoft.netcore.targets.1.1.0.nupkg.sha512",
+    "C:\\Users\\ADMINISTRATOR\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.17.0\\microsoft.visualstudio.azure.containers.tools.targets.1.17.0.nupkg.sha512",
     "C:\\Users\\ADMINISTRATOR\\.nuget\\packages\\microsoft.win32.primitives\\4.3.0\\microsoft.win32.primitives.4.3.0.nupkg.sha512",
     "C:\\Users\\ADMINISTRATOR\\.nuget\\packages\\microsoft.win32.registry\\4.7.0\\microsoft.win32.registry.4.7.0.nupkg.sha512",
     "C:\\Users\\ADMINISTRATOR\\.nuget\\packages\\microsoft.win32.systemevents\\4.7.0\\microsoft.win32.systemevents.4.7.0.nupkg.sha512",

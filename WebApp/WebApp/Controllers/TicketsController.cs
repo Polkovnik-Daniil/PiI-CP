@@ -39,6 +39,21 @@ namespace WebApp.Controllers {
             return IsAdmin ? db.GetList() : db.GetList().Where(x => x.email == username);
         }
 
+        [HttpPost]
+        [Route("create")]
+        public bool Create([FromBody] Tickets ticket) {
+            //dbf.GetList().Where(x => x.FID == IDF && x.Number_Free_places > 0).FirstOrDefault().Number_Free_places -= 1;
+            //dbf - Repository Flights
+            Flights? isExist = dbf.GetList().FirstOrDefault(x => x.FID == ticket.IDF&& x.Number_Free_places > 0);
+            if (isExist != null) {
+                dbf.GetList().FirstOrDefault(x => x.FID == ticket.IDF && x.Number_Free_places > 0).Number_Free_places -= 1;
+                db.Create(new Tickets() { ID = ticket.ID, IDF = ticket.IDF, MID = ticket.MID == "null" ? null : ticket.MID, email = ticket.email });
+                db.Save();
+                dbf.Save();
+                return true;
+            }
+            return false;
+        }
         [HttpGet]
         [Route("create")]
         public bool Create(string username, string id, string idf, string mid) {
@@ -47,8 +62,21 @@ namespace WebApp.Controllers {
             Flights? isExist = dbf.GetList().FirstOrDefault(x => x.FID == idf && x.Number_Free_places > 0);
             if (isExist != null) {
                 dbf.GetList().FirstOrDefault(x => x.FID == idf && x.Number_Free_places > 0).Number_Free_places -= 1;
-                db.Create(new Tickets() { ID = id, IDF = idf, MID = mid, email = username });
+                db.Create(new Tickets() { ID = id, IDF = idf, MID = mid == "null" ? null : mid, email = username });
                 db.Save();
+                dbf.Save();
+                return true;
+            }
+            return false;
+        }
+
+        [HttpDelete]
+        [Route("delete")]
+        public bool Delete([FromBody] Tickets ticket) {
+            Tickets? isExist = db.GetList().FirstOrDefault(x => x.ID == ticket.ID);
+            if (isExist != null) {
+                dbf.GetList().FirstOrDefault(x => x.FID == ticket.IDF && x.Number_Free_places > 0).Number_Free_places += 1;
+                db.Delete(ticket.ID);
                 return true;
             }
             return false;
@@ -71,7 +99,20 @@ namespace WebApp.Controllers {
         public bool Update(string username, string id, string idf, string mid) {
             Tickets? isExist = db.GetList().FirstOrDefault(x => x.ID == id);
             if (isExist != null) {
-                db.Update(new Tickets() { email = username, ID = id, IDF = idf, MID = mid });
+                db.Update(new Tickets() { email = username == "null" ? null : username, ID = id, IDF = idf, MID = mid == "null" ? null : mid });
+                db.Save();
+                return true;
+            }
+            return false;
+        }
+
+        [HttpPut]
+        [Route("update")]
+        public bool Update([FromBody] Tickets ticket) {
+            Tickets? isExist = db.GetList().FirstOrDefault(x => x.ID == ticket.ID);
+            if (isExist != null) {
+                db.Update(new Tickets() { email = ticket.email, ID = ticket.ID, IDF = ticket.IDF, MID = ticket.MID });
+                db.Save();
                 return true;
             }
             return false;

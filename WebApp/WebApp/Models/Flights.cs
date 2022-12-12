@@ -5,7 +5,6 @@ namespace WebApp.Models {
     public class Flights {
         [Key]
         [MaxLength(450)]
-
         public string FID { get; set; } //ID_Flight
         [MaxLength(450)]
         public string IDA { get; set; } //ID_Airplane
@@ -18,7 +17,6 @@ namespace WebApp.Models {
         [MaxLength(450)]
         public string Point_of_Arrival { get; set; }
         [MaxLength(450)]
-
         public string Arrival_Airport { get; set; }
         [MaxLength(450)]
         public string Status { get; set; }

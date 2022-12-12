@@ -39,50 +39,63 @@ namespace WebApp.Controllers {
 
         [HttpPost]
         [Route("create")]
-        public void Create(string FID, string IDA, DateTime Date_and_Time_of_Departure,
-                           DateTime Date_and_Time_of_Arrival, string Departure_Point,
-                           string Departure_Airport, string Point_of_Arrival,
-                           string Arrival_Airport, string Status,
-                           int Number_Free_places, string IDT) {
-            db.Create(new Flights() {
-                FID = FID,
-                IDA = IDA,
-                Date_and_Time_of_Departure = Date_and_Time_of_Departure,
-                Date_and_Time_of_Arrival = Date_and_Time_of_Arrival,
-                Departure_Point = Departure_Point,
-                Point_of_Arrival = Point_of_Arrival,
-                Arrival_Airport = Arrival_Airport,
-                Status = Status,
-                Departure_Airport = Departure_Airport,
-                Number_Free_places = Number_Free_places,
-            });
+        public async Task<bool> CreateAsync(string username, string fid, string ida, DateTime date_and_Time_of_Departure,
+                           DateTime date_and_Time_of_Arrival, string departure_Point,
+                           string departure_Airport, string point_of_Arrival,
+                           string arrival_Airport, string status,
+                           int number_Free_places) {
+            bool IsAdmin = await IsAdminAsync(username);
+            if (IsAdmin) {
+                db.Create(new Flights() {
+                    FID = fid,
+                    IDA = ida,
+                    Date_and_Time_of_Departure = date_and_Time_of_Departure,
+                    Date_and_Time_of_Arrival = date_and_Time_of_Arrival,
+                    Departure_Point = departure_Point,
+                    Point_of_Arrival = point_of_Arrival,
+                    Arrival_Airport = arrival_Airport,
+                    Status = status,
+                    Departure_Airport = departure_Airport,
+                    Number_Free_places = number_Free_places
+                });
+                db.Save();
+                return true;
+            }
+            return false;
         }
 
-        [HttpGet]
-        [Route("delete")]
-        public void Delete(string id) {
-            db.Delete(id);
-        }
-
-        [HttpGet]
+        [HttpPost]
         [Route("update")]
-        public void Update(string FID, string IDA, DateTime Date_and_Time_of_Departure,
-                           DateTime Date_and_Time_of_Arrival, string Departure_Point,
-                           string Departure_Airport, string Point_of_Arrival,
-                           string Arrival_Airport, string Status,
-                           int Number_Free_places, string IDT) {
-            db.Create(new Flights() {
-                FID = FID,
-                IDA = IDA,
-                Date_and_Time_of_Departure = Date_and_Time_of_Departure,
-                Date_and_Time_of_Arrival = Date_and_Time_of_Arrival,
-                Departure_Point = Departure_Point,
-                Point_of_Arrival = Point_of_Arrival,
-                Arrival_Airport = Arrival_Airport,
-                Status = Status,
-                Departure_Airport = Departure_Airport,
-                Number_Free_places = Number_Free_places,
-            });
+        public async Task<bool> Update(string username, string fid, string ida, DateTime date_and_Time_of_Departure,
+                           DateTime date_and_Time_of_Arrival, string departure_Point,
+                           string departure_Airport, string point_of_Arrival,
+                           string arrival_Airport, string status,
+                           int number_Free_places) {
+            bool IsAdmin = await IsAdminAsync(username);
+            if (IsAdmin) {
+                db.Update(new Flights() {
+                    FID = fid,
+                    IDA = ida,
+                    Date_and_Time_of_Departure = date_and_Time_of_Departure,
+                    Date_and_Time_of_Arrival = date_and_Time_of_Arrival,
+                    Departure_Point = departure_Point,
+                    Point_of_Arrival = point_of_Arrival,
+                    Arrival_Airport = arrival_Airport,
+                    Status = status,
+                    Departure_Airport = departure_Airport,
+                    Number_Free_places = number_Free_places
+                });
+                db.Save();
+                return true;
+            }
+            return false;
         }
+
+        [HttpPut]
+        [Route("delete")]
+        public void Delete(string fid) {
+            db.Delete(fid);
+        }
+
     }
 }

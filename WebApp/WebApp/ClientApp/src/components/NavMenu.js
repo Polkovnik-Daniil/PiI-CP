@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { LoginMenu } from './api-authorization/LoginMenu';
 import './NavMenu.css';
 import authService from './api-authorization/AuthorizeService';
-import Mans from './Mans/Mans';
+import logo from './Logo.png' 
 
 export class NavMenu extends Component {
     static displayName = NavMenu.name;
@@ -52,7 +52,7 @@ export class NavMenu extends Component {
         return (
             <header>
                 <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" container light>
-                    <NavbarBrand tag={Link} to="/">WebApp</NavbarBrand>
+                    <NavbarBrand tag={Link} to="/"><img height="5%" width="5%" src={logo} alt="Logotype" /></NavbarBrand>
                     <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
                     <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
                         <ul className="navbar-nav flex-grow">

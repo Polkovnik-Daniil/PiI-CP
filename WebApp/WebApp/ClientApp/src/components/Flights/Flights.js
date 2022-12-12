@@ -14,8 +14,23 @@ import { Navigate } from 'react-router-dom';
 //первый параметр в квадратных скобках говорит о том,
 //что это переменная будет передаваться в название метода
 //указанного вторым в квадратых скобках, значение которое
-//будет хранить переменная указано в useState([]), 
-//т.е. она хранит пустой массив 
+//будет хранить переменная указано в useState([]),
+//т.е. она хранит пустой массив
+
+/**
+ * Generates a GUID string.
+ * @returns {string} The generated GUID.
+ * @example af8a8416-6e18-a307-bd9c-f2c947bbb3aa
+ * @author Slavik Meltser.
+ * @link http://slavik.meltser.info/?p=142
+ */
+function GUID() {
+    function _p8(s) {
+        var p = (Math.random().toString(16) + "000000000").substr(2, 8);
+        return s ? "-" + p.substr(0, 4) + "-" + p.substr(4, 4) : p;
+    }
+    return _p8() + _p8(true) + _p8(true) + _p8();
+}
 
 export class Flights extends Component {
 
@@ -30,6 +45,9 @@ export class Flights extends Component {
             row: null,
             columns: null,
             canAccess: null,
+            redtoauth: false,  //redirect to authorisation
+            username: null,
+            token: null,
             //add pagination into BootstrapTable
             pagination: paginationFactory({
                 page: 1,
@@ -70,14 +88,13 @@ export class Flights extends Component {
             const dataMans = await response.json();
             //set real id man in table, not number
             localStorage.setItem("DFS", JSON.stringify(dataMans));
-            this.setState({ loading: false, data: dataMans });
+            //this.setState({ loading: false, data: dataMans });
             this.state.data = dataMans;
             this.state.loading = false;
-            this.setState({});
+            //this.setState({});
             //remove!!
-            return;
         }
-        this.setState({ loading: false });
+        //    this.setState({ loading: false });
     }
 
     async getAccess() {
@@ -92,6 +109,9 @@ export class Flights extends Component {
             canAccess_ = await response.json();
             this.state.canAccess = canAccess_;
             this.state.loading = false;
+            //
+            this.state.token=token;
+            this.state.isAutentificated = true;
             this.setState({ canAccess: canAccess_, loading: false });
         } else {
             this.setState({ canAccess: false, loading: false });
@@ -104,7 +124,7 @@ export class Flights extends Component {
                 { dataField: "date_and_Time_of_Departure", text: "Время отбытия", sort: true, filter: textFilter() },
                 { dataField: "date_and_Time_of_Arrival", text: "Время прибытия", sort: true, filter: textFilter() },
                 { dataField: "departure_Point", text: "Точка отбытия", sort: true, filter: textFilter() },
-                { dataField: "departure_Airport", text: "Время отбытия", sort: true, filter: textFilter() },
+                { dataField: "departure_Airport", text: "Аэропорт отбытия", sort: true, filter: textFilter() },
                 { dataField: "point_of_Arrival", text: "Точка прибытия", sort: true, filter: textFilter() },
                 { dataField: "arrival_Airport", text: "Аэропорт прибытия", sort: true, filter: textFilter() },
                 { dataField: "status", text: "Статус", sort: true, filter: textFilter() },
@@ -116,29 +136,56 @@ export class Flights extends Component {
                 { dataField: "date_and_Time_of_Departure", text: "Время отбытия", sort: true, filter: textFilter() },
                 { dataField: "date_and_Time_of_Arrival", text: "Время прибытия", sort: true, filter: textFilter() },
                 { dataField: "departure_Point", text: "Точка отбытия", sort: true, filter: textFilter() },
-                { dataField: "departure_Airport", text: "Время отбытия", sort: true, filter: textFilter() },
+                { dataField: "departure_Airport", text: "Аэропорт отбытия", sort: true, filter: textFilter() },
                 { dataField: "point_of_Arrival", text: "Точка прибытия", sort: true, filter: textFilter() },
                 { dataField: "arrival_Airport", text: "Аэропорт прибытия", sort: true, filter: textFilter() },
                 { dataField: "status", text: "Статус", sort: true, filter: textFilter() },
                 { dataField: "number_Free_places", text: "Количество свободных мест", sort: true, filter: textFilter() }
             ];
         }
-        this.setState();
+        this.setState({});
     }
-
 
     renderMans() {
         const rowEvent = {
-            onClick: (e, row) => {
+            onClick: async (e, row) => {
                 console.log(row);
-                const row_ = row;
+                if (this.state.canAccess) {
+                    this.state.toEdit = true;
+                    localStorage.setItem("DFSR", JSON.stringify(row));
+                    this.setState({});
+                } else {
+                    var answer = window.confirm("Приобрести билет?");
+                    if (answer) {
+                        if (!this.state.isAutentificated) {
+                            this.state.redtoauth = true;
+                            this.setState({});
+                            return;
+                        }
+                        if (this.state.isAutentificated && !this.state.canAccess) {
+                            var response = await fetch(`api/tickets/create?username=${this.state.username}&id=${GUID()}&idf=${row.fid}&mid=null`, {
+                                headers: !this.state.token ? {} : { 'Authorization': `Bearer ${this.state.token}` }
+                            });
+                            const data = await response.json();
+                            alert(data ? "Успешно приопритен билет!" : "Покупка не была совершена, обновите страницу!");
+                        }
+                        this.getData();
+                    }
+                }
             }
         };
 
         const create = () => {
             this.setState({ toEdit: true });
+            var isExist = localStorage.getItem("DFSR");
+            if (isExist) {
+                localStorage.removeItem("DFSR");
+            }
         };
 
+        if (this.state.redtoauth) {
+            return (<Navigate to="/authentication/login" />);
+        }
 
         if (this.state.toEdit) {
             return (<Navigate to="/flights/edit" />);

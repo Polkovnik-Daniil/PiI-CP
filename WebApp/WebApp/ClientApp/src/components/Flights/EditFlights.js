@@ -17,10 +17,10 @@ import authService from '../api-authorization/AuthorizeService';
  * @author Slavik Meltser.
  * @link http://slavik.meltser.info/?p=142
  */
- function GUID() {
+function GUID() {
     function _p8(s) {
-        var p = (Math.random().toString(16)+"000000000").substr(2,8);
-        return s ? "-" + p.substr(0,4) + "-" + p.substr(4,4) : p ;
+        var p = (Math.random().toString(16) + "000000000").substr(2, 8);
+        return s ? "-" + p.substr(0, 4) + "-" + p.substr(4, 4) : p;
     }
     return _p8() + _p8(true) + _p8(true) + _p8();
 }
@@ -48,13 +48,18 @@ export class EditFlights extends Component {
             buttonName: null
         };
 
-        const data = JSON.parse(localStorage.getItem("row"));
+        const data = JSON.parse(localStorage.getItem("DFSR"));
         if (data !== null) {
-            this.state.idm = data.idm;
-            this.state.passport_number = data.passport_number;
-            this.state.name = data.name;
-            this.state.surname = data.surname;
-            this.state.sex = data.sex;
+            this.state.fid = data.fid;
+            this.state.ida = data.ida;
+            this.state.date_and_Time_of_Departure = data.date_and_Time_of_Departure;
+            this.state.date_and_Time_of_Arrival = data.date_and_Time_of_Arrival;
+            this.state.departure_Point = data.departure_Point;
+            this.state.departure_Airport = data.departure_Airport;
+            this.state.point_of_Arrival = data.point_of_Arrival;
+            this.state.arrival_Airport = data.arrival_Airport;
+            this.state.status = data.status;
+            this.state.number_Free_places = data.number_Free_places;
             this.state.buttonName = "Сохранить";
             return;
         }
@@ -109,17 +114,36 @@ export class EditFlights extends Component {
                 var path = "";
                 switch (this.state.operation) {
                     case operation.create:
-                        path = `create?username=${username}&idm=${this.state.idm}&passport_number=${this.state.passport_number}&name=${this.state.name}&surname=${this.state.surname}&sex=${this.state.sex}`;
+                        path = `create?username=${username}&fid=${this.state.fid}` +
+                            `&ida=${this.state.ida}` +
+                            `&date_and_Time_of_Departure=${this.state.date_and_Time_of_Departure}` +
+                            `&date_and_Time_of_Arrival=${this.state.date_and_Time_of_Arrival}` +
+                            `&departure_Point=${this.state.departure_Point}` +
+                            `&departure_Airport=${this.state.departure_Airport}` +
+                            `&point_of_Arrival=${this.state.point_of_Arrival}` +
+                            `&arrival_Airport=${this.state.arrival_Airport}` +
+                            `&status=${this.state.status}` +
+                            `&number_Free_places=${this.state.number_Free_places}`;
                         break;
                     case operation.delete:
-                        path = `delete?username=${username}&idm=${this.state.idm}`;
+                        path = `delete?username=${username}&fid=${this.state.fid}`;
                         break;
                     case operation.update:
-                        path = `update?username=${username}&idm=${this.state.idm}&passport_number=${this.state.passport_number}&name=${this.state.name}&surname=${this.state.surname}&sex=${this.state.sex}`;
+                        path = `update?username=${username}&fid=${this.state.fid}` +
+                            `&ida=${this.state.ida}` +
+                            `&date_and_Time_of_Departure=${this.state.date_and_Time_of_Departure}` +
+                            `&date_and_Time_of_Arrival=${this.state.date_and_Time_of_Arrival}` +
+                            `&departure_Point=${this.state.departure_Point}` +
+                            `&departure_Airport=${this.state.departure_Airport}` +
+                            `&point_of_Arrival=${this.state.point_of_Arrival}` +
+                            `&arrival_Airport=${this.state.arrival_Airport}` +
+                            `&status=${this.state.status}` +
+                            `&number_Free_places=${this.state.number_Free_places}`;
                         break;
                 }
                 const token = await authService.getAccessToken();
-                var response = await fetch(`api/mans/${path}`, {
+                var response = await fetch(`api/flights/${path}`, {
+                    method: this.state.operation == 0 ? 'POST' : this.state.operation == 1 ? 'PUT' : 'POST',
                     headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
                 });
                 var text;
@@ -164,35 +188,33 @@ export class EditFlights extends Component {
 
             const departure_PointOC = (event) => {
                 this.setState({});
-                this.state.departure_Point = event.target.defaultValue;
+                this.state.departure_Point = event.target.value;
             };
 
             const departure_AirportOC = (event) => {
                 this.setState({});
-                this.state.departure_Airport = event.target.defaultValue;
+                this.state.departure_Airport = event.target.value;
             };
 
             const point_of_ArrivalOC = (event) => {
                 this.setState({});
-                this.state.point_of_Arrival = event.target.defaultValue;
+                this.state.point_of_Arrival = event.target.value;
             };
 
             const arrival_AirportOC = (event) => {
                 this.setState({});
-                this.state.arrival_Airport = event.target.defaultValue;
+                this.state.arrival_Airport = event.target.value;
             };
 
             const statusOC = (event) => {
                 this.setState({});
-                this.state.status = event.target.defaultValue;
+                this.state.status = event.target.value;
             };
 
             const number_Free_placesOC = (event) => {
                 this.setState({});
-                this.state.number_Free_places = event.target.defaultValue;
+                this.state.number_Free_places = event.target.value;
             };
-
-
 
             const GUIDOC = () => {
                 this.setState({ fid: GUID() });
@@ -230,9 +252,9 @@ export class EditFlights extends Component {
                             <input type="text" size="40" placeholder="Точка отбытия" onChange={departure_PointOC} value={this.state.departure_Point} />
                         </p>
                         <p>
-                            <b>Время отбытия</b>
+                            <b>Аэропорт отбытия</b>
                             <br></br>
-                            <input type="text" size="40" placeholder="Время отбытия" onChange={departure_AirportOC} value={this.state.departure_Airport} />
+                            <input type="text" size="40" placeholder="Аэропорт отбытия" onChange={departure_AirportOC} value={this.state.departure_Airport} />
                         </p>
                         <p>
                             <b>Точка прибытия</b>
@@ -247,12 +269,12 @@ export class EditFlights extends Component {
                         <p>
                             <b>Статус</b>
                             <br></br>
-                            <input type="text" size="40" placeholder="status" onChange={statusOC} value={this.state.status} />
+                            <input type="text" size="40" placeholder="Статус" onChange={statusOC} value={this.state.status} />
                         </p>
                         <p>
                             <b>Количество свободных мест</b>
                             <br></br>
-                            <input type="text" size="40" placeholder="status" onChange={number_Free_placesOC} value={this.state.number_Free_places} />
+                            <input type="text" size="40" placeholder="Количество свободных мест" onChange={number_Free_placesOC} value={this.state.number_Free_places} />
                         </p>
                         <div id="butt">
                             <input type="submit" size="20" value={this.state.buttonName} onClick={CreateOrUpdate}></input>

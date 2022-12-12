@@ -26,19 +26,16 @@ export class Tickets extends Component {
         this.state = {
             toEdit: false,
             isAutentificated: false,
-            data: null,
+            data: [],
             idf: null,
             mid: null,
             email: null,
             id: null,
             loading: true,
             row: null,
-            columns: [
-                { dataField: "id", text: "ID", sort: true, filter: textFilter() }, //add filter into BootstrapTable
-                { dataField: "idf", text: "ID рейса", sort: true, filter: textFilter() },
-                { dataField: "mid", text: "ID человека", sort: true, filter: textFilter() },
-                { dataField: "email", text: "почта", sort: true, filter: textFilter() },
-            ],
+            columns: null,
+            username: null,
+            canAccess: null,
             //add pagination into BootstrapTable
             pagination: paginationFactory({
                 page: 1,
@@ -67,29 +64,67 @@ export class Tickets extends Component {
 
     componentDidMount() {
         this._subscription = authService.subscribe(() => this.getData());
+        this.getAccess();
         this.getData('tickets');
-        this.getData('flights');
     }
+
+    async getAccess() {
+        const token = await authService.getAccessToken();
+        const [user] = await Promise.all([authService.getUser()]);
+        let canAccess_;
+        if (user !== null) {
+            this.state.username = user.name;
+            var response = await fetch(`api/flights/canaccess?username=${user.name}`, {
+                headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+            });
+            canAccess_ = await response.json();
+            this.state.isAutentificated = true;
+            this.state.canAccess = canAccess_;
+            //для обновления состояния используем одну переменную
+            this.setState((state) => { return { loading: false } });
+        } else {
+            canAccess_ = false;
+            this.setState((state) => { return { canAccess: false, loading: false, isAutentificated: false } });
+        }
+        if (canAccess_) {
+            this.state.columns = [
+                { dataField: "id", text: "ID", sort: true, filter: textFilter() }, //add filter into BootstrapTable
+                { dataField: "idf", text: "ID рейса", sort: true, filter: textFilter() },
+                { dataField: "mid", text: "ID человека", sort: true, filter: textFilter() },
+                { dataField: "email", text: "почта", sort: true, filter: textFilter() },
+            ];
+        } else {
+            this.state.columns = [
+                { dataField: "idf", text: "ID рейса", sort: true, filter: textFilter() }
+            ];
+        }
+    }
+
+
     async getData(path) {
         const token = await authService.getAccessToken();
         const [user] = await Promise.all([authService.getUser()]);
-        this.state.userName = user.name;
-        localStorage.setItem("username", user.name);
-        var response = await fetch(`api/${path}/get?username=${user.name}`, {
-            headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
-        });
+        if (user !== null) {
+            this.state.userName = user.name;
+            localStorage.setItem("username", user.name);
+            var response = await fetch(`api/${path}/get?username=${user.name}`, {
+                method: 'GET',
+                headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+            });
 
-        if (response.status !== 204) {
-            const dataTickets = await response.json();
-
-            //set real id man in table, not number
-            let isTickets = path === 'tickets';
-            localStorage.setItem(isTickets ? "DTS" : "DFGS", JSON.stringify(dataTickets));
-            this.setState({ loading: false, data: dataTickets, isAutentificated: true });
-            //remove!!
-            return;
+            if (response.status !== 204) {
+                const dataTickets = await response.json();
+                localStorage.setItem("DTS", JSON.stringify(dataTickets));
+                this.state.data = dataTickets;
+                this.state.isAutentificated = true;
+                //для обновления состояния используем одну переменную
+                this.setState((state) => { return { loading: false } });
+            }
         }
-        this.setState({ loading: false, isAutentificated: false });
+        else {
+            this.state.isAutentificated = false;
+            this.setState((state) => { return { loading: false } });
+        }
     }
 
     renderTickets() {
@@ -99,22 +134,27 @@ export class Tickets extends Component {
                     console.log(row);
                     const row_ = row
                     this.setState({ toEdit: true, row: row_ });
-                    localStorage.setItem("row", JSON.stringify(row));
+                    localStorage.setItem("DT", JSON.stringify(row));
                 }
             };
 
             const create = () => {
                 this.setState({ toEdit: true });
+                localStorage.removeItem("DT");
             };
 
             return (
                 <div>
                     <center><h1 id="tabelLabel" >Tickets data</h1></center>
                     {/* rendering table */}
-                    <BootstrapTable bootstrap4 keyField='id' columns={this.state.columns}
+                    <BootstrapTable bootstrap4 keyField='idf' columns={this.state.columns}
                         data={this.state.data} pagination={this.state.pagination} filter={(filterFactory())}
                         rowEvents={rowEvent} />
-                    <input type="submit" value="Добавить" onClick={create} ></input>
+                    {
+                        this.state.canAccess ?
+                            < input type="submit" value="Добавить" onClick={create} ></input>
+                            : null
+                    }
                 </div>
             );
         }
