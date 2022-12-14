@@ -9,12 +9,14 @@ namespace WebApp.Controllers {
     [ApiController]
     [Route("api/[controller]/")]
     public class FlightsController : Controller {
-        IRepository<Flights> db;
+        //IRepository<Flights> db;
+        UnitOfWork unitOfWork;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
         public FlightsController(UserManager<ApplicationUser> userManager,
                               SignInManager<ApplicationUser> signInManager) {
-            db = new FlightsRepository();
+            //db = new FlightsRepository();
+            unitOfWork = new UnitOfWork();
             this.userManager = userManager;
             this.signInManager = signInManager;
         }
@@ -34,7 +36,7 @@ namespace WebApp.Controllers {
         [HttpGet]
         [Route("get")]
         public IEnumerable<Flights> Get() {
-            return db.GetList();
+            return unitOfWork.Flights.GetList();
         }
 
         [HttpPost]
@@ -46,7 +48,7 @@ namespace WebApp.Controllers {
                            int number_Free_places) {
             bool IsAdmin = await IsAdminAsync(username);
             if (IsAdmin) {
-                db.Create(new Flights() {
+                unitOfWork.Flights.Create(new Flights() {
                     FID = fid,
                     IDA = ida,
                     Date_and_Time_of_Departure = date_and_Time_of_Departure,
@@ -58,7 +60,7 @@ namespace WebApp.Controllers {
                     Departure_Airport = departure_Airport,
                     Number_Free_places = number_Free_places
                 });
-                db.Save();
+                unitOfWork.Save();
                 return true;
             }
             return false;
@@ -73,7 +75,7 @@ namespace WebApp.Controllers {
                            int number_Free_places) {
             bool IsAdmin = await IsAdminAsync(username);
             if (IsAdmin) {
-                db.Update(new Flights() {
+                unitOfWork.Flights.Update(new Flights() {
                     FID = fid,
                     IDA = ida,
                     Date_and_Time_of_Departure = date_and_Time_of_Departure,
@@ -85,7 +87,7 @@ namespace WebApp.Controllers {
                     Departure_Airport = departure_Airport,
                     Number_Free_places = number_Free_places
                 });
-                db.Save();
+                unitOfWork.Save();
                 return true;
             }
             return false;
@@ -93,8 +95,11 @@ namespace WebApp.Controllers {
 
         [HttpPut]
         [Route("delete")]
-        public void Delete(string fid) {
-            db.Delete(fid);
+        public async void Delete(string username, string fid) {
+            bool isAdmin = await IsAdminAsync(username);
+            if(isAdmin) {
+                unitOfWork.Flights.Delete(fid);
+            }
         }
 
     }

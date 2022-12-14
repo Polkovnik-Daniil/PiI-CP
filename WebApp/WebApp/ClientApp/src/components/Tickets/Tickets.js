@@ -74,7 +74,7 @@ export class Tickets extends Component {
         let canAccess_;
         if (user !== null) {
             this.state.username = user.name;
-            var response = await fetch(`api/flights/canaccess?username=${user.name}`, {
+            const response = await fetch(`api/tickets/canaccess?username=${user.name}`, {
                 headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
             });
             canAccess_ = await response.json();
@@ -130,11 +130,25 @@ export class Tickets extends Component {
     renderTickets() {
         if (this.state.isAutentificated && !this.state.toEdit) {
             const rowEvent = {
-                onClick: (e, row) => {
+                onClick: async (e, row) => {
                     console.log(row);
-                    const row_ = row
-                    this.setState({ toEdit: true, row: row_ });
-                    localStorage.setItem("DT", JSON.stringify(row));
+                    if (this.state.canAccess) {
+                        const row_ = row;
+                        this.setState({ toEdit: true, row: row_ });
+                        localStorage.setItem("DT", JSON.stringify(row));
+                    } else {
+                        var answer = window.confirm("Отменить билет?");
+                        if (answer) {
+                            const token = await authService.getAccessToken();
+                            var response = await fetch(`api/tickets/delete`, {
+                                method: 'DELETE',
+                                headers: !token ? {} : { 'Authorization': `Bearer ${this.state.token}`, 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ ID: row.id, IDF: row.idf, MID: row.mid, email: row.email })
+                            });
+                            const data = await response.json();
+                            alert(data ? "Успешно отменен билет!" : "Отмена билета не была совершина!");
+                        }
+                    }
                 }
             };
 

@@ -7,16 +7,15 @@ namespace WebApp.Controllers {
     [ApiController]
     [Route("api/[controller]/")]
     public class AboutController : Controller {
-        IRepository<Mans> db;
-
+        UnitOfWork unitOfWork;
         public AboutController() {
-            db = new MansRepository();
+            unitOfWork = new UnitOfWork();
         }
         [HttpGet]
         [Route("get")]
         //[Authorize(Roles ="Administrator")]
-        public IEnumerable<Mans> Get() {
-            return db.GetList();
+        public String Get() {
+            return "Helloy!";
         }
     }
 }

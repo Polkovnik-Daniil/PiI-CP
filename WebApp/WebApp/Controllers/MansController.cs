@@ -14,12 +14,14 @@ namespace WebApp.Controllers {
     [ApiController]
     [Route("api/[controller]/")]
     public class MansController : Controller {
-        IRepository<Mans> db;
+        //IRepository<Mans> db;
+        UnitOfWork unitOfWork;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
         public MansController(UserManager<ApplicationUser> userManager,
                               SignInManager<ApplicationUser> signInManager) {
-            db = new MansRepository();
+            //db = new MansRepository();
+            unitOfWork = new UnitOfWork();
             this.userManager = userManager;
             this.signInManager = signInManager;
         }
@@ -44,7 +46,7 @@ namespace WebApp.Controllers {
         [Route("get")]
         public async Task<IEnumerable<Mans>?> GetAsync(string username) {
             bool IsAdmin = await IsAdminAsync(username);
-            return IsAdmin ? db.GetList() : null;
+            return IsAdmin ? unitOfWork.Mans.GetList() : null;
         }
 
 
@@ -53,8 +55,8 @@ namespace WebApp.Controllers {
         public async Task<bool> CreateAsync(string username, string idm, string passport_number, string name, string surname, bool sex) {
             bool IsAdmin = await IsAdminAsync(username);
             if (IsAdmin) {
-                db.Create(new Mans() { IDM = idm, Passport_number = passport_number, Name = name, Surname = surname, Sex = sex });
-                db.Save();
+                unitOfWork.Mans.Create(new Mans() { IDM = idm, Passport_number = passport_number, Name = name, Surname = surname, Sex = sex });
+                unitOfWork.Save();
                 return true;
             }
             return false;
@@ -65,8 +67,8 @@ namespace WebApp.Controllers {
         public async Task<bool> Delete(string username, string idm) { 
             bool IsAdmin = await IsAdminAsync(username);
             if (IsAdmin) {
-                db.Delete(idm);
-                db.Save();
+                unitOfWork.Flights.Delete(idm);
+                unitOfWork.Save();
                 return true;
             }
             return false;
@@ -77,8 +79,8 @@ namespace WebApp.Controllers {
         public async Task<bool> Update(string username, string IDM, string Passport_number, string Name, string Surname, bool Sex) {
             bool IsAdmin = await IsAdminAsync(username);
             if (IsAdmin) {
-                db.Update(new Mans() { IDM = IDM, Passport_number = Passport_number, Name = Name, Surname = Surname, Sex = Sex });
-                db.Save();
+                unitOfWork.Mans.Update(new Mans() { IDM = IDM, Passport_number = Passport_number, Name = Name, Surname = Surname, Sex = Sex });
+                unitOfWork.Save();
                 return true;
             }
             return false;

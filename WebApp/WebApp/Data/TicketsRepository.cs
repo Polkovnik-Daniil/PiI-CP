@@ -6,8 +6,8 @@ namespace WebApp.Data {
     public class TicketsRepository : IRepository<Tickets> {
         private ApplicationDbContext db;
 
-        public TicketsRepository() {
-            this.db = new ApplicationDbContext(ApplicationDbContext._options, ApplicationDbContext._operationalStoreOptions);
+        public TicketsRepository(ApplicationDbContext db) {
+            this.db = db;//new ApplicationDbContext(ApplicationDbContext._options, ApplicationDbContext._operationalStoreOptions);
         }
 
         public IEnumerable<Tickets> GetList() {

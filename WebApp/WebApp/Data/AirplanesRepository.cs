@@ -4,9 +4,8 @@ using WebApp.Models;
 namespace WebApp.Data {
     public class AirplanesRepository : IRepository<Airplanes>{
         private ApplicationDbContext db;
-
-        public AirplanesRepository() {
-            this.db = new ApplicationDbContext(ApplicationDbContext._options, ApplicationDbContext._operationalStoreOptions);
+        public AirplanesRepository(ApplicationDbContext db) {
+            this.db = db;/*new ApplicationDbContext(ApplicationDbContext._options, ApplicationDbContext._operationalStoreOptions);*/
         }
 
         public IEnumerable<Airplanes> GetList() {

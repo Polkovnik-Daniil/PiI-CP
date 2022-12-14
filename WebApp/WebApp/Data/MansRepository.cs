@@ -5,8 +5,8 @@ namespace WebApp.Data {
     public class MansRepository : IRepository<Mans> {
         private ApplicationDbContext db;
 
-        public MansRepository() {
-            this.db = new ApplicationDbContext(ApplicationDbContext._options, ApplicationDbContext._operationalStoreOptions);
+        public MansRepository(ApplicationDbContext db) {
+            this.db = db; //new ApplicationDbContext(ApplicationDbContext._options, ApplicationDbContext._operationalStoreOptions);
         }
 
         public IEnumerable<Mans> GetList() {

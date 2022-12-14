@@ -43,7 +43,7 @@ export class Flights extends Component {
             isAutentificated: false,
             data: [], loading: true,
             row: null,
-            columns: null,
+            columns: [],
             canAccess: null,
             redtoauth: false,  //redirect to authorisation
             username: null,
@@ -94,7 +94,7 @@ export class Flights extends Component {
             //this.setState({});
             //remove!!
         }
-        //    this.setState({ loading: false });
+        this.setState({ loading: false });
     }
 
     async getAccess() {
@@ -114,8 +114,8 @@ export class Flights extends Component {
             this.state.isAutentificated = true;
             this.setState({ canAccess: canAccess_, loading: false });
         } else {
-            this.setState({ canAccess: false, loading: false });
             canAccess_ = false;
+            this.setState({ canAccess: false, loading: false });
         }
         if (canAccess_) {
             this.state.columns = [
@@ -143,7 +143,7 @@ export class Flights extends Component {
                 { dataField: "number_Free_places", text: "Количество свободных мест", sort: true, filter: textFilter() }
             ];
         }
-        this.setState({});
+        //this.setState({});
     }
 
     renderMans() {
