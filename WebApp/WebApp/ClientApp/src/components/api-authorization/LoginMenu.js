@@ -31,7 +31,7 @@ export class LoginMenu extends Component {
             userName: user && user.name
         });
         localStorage.removeItem("user");
-        localStorage.setItem("isAuthenticated");
+        //localStorage.setItem("isAuthenticated");
         //localStorage.setItem("user", JSON.stringify(user));
         //localStorage.setItem("isAuthenticated", this.state.isAuthenticated);
     }

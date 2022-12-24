@@ -43,7 +43,7 @@ export class EditAirplanes extends Component {
         };
 
         const data = JSON.parse(localStorage.getItem("REA"));
-        if (data !== null) {
+        if (data !== null && data !== []) {
             this.state.ida = data.ida;
             this.state.name_airplane = data.name_Airplanes;
             this.state.number_places = data.number_places;

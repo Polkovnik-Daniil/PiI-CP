@@ -1,8 +1,23 @@
 {
   "dependencies": {
     "mssql1": {
+      "containerPorts": "1433:1433",
+      "secretStore": "LocalSecretsFile",
+      "containerName": "mssql",
+      "containerImage": "mcr.microsoft.com/mssql/server:2019-latest",
+      "type": "mssql.container",
+      "connectionId": "Kestrel:Certificates:Development:Password",
+      "dynamicId": null
+    },
+    "mssql2": {
+      "secretStore": "LocalSecretsFile",
+      "resourceId": null,
       "type": "mssql.local",
       "connectionId": "ConnectionStrings:DefaultConnection"
+    },
+    "secrets1": {
+      "type": "secrets.user",
+      "dynamicId": null
     }
   }
 }

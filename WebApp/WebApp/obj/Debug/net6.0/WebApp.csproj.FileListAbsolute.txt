@@ -15,6 +15,8 @@ D:\Danik\7 semester\PiI\Course Project\WebApp\WebApp\bin\Debug\net6.0\Duende.Ide
 D:\Danik\7 semester\PiI\Course Project\WebApp\WebApp\bin\Debug\net6.0\Duende.IdentityServer.Storage.dll
 D:\Danik\7 semester\PiI\Course Project\WebApp\WebApp\bin\Debug\net6.0\Humanizer.dll
 D:\Danik\7 semester\PiI\Course Project\WebApp\WebApp\bin\Debug\net6.0\IdentityModel.dll
+D:\Danik\7 semester\PiI\Course Project\WebApp\WebApp\bin\Debug\net6.0\System.Net.Http.Formatting.dll
+D:\Danik\7 semester\PiI\Course Project\WebApp\WebApp\bin\Debug\net6.0\System.Web.Http.dll
 D:\Danik\7 semester\PiI\Course Project\WebApp\WebApp\bin\Debug\net6.0\Microsoft.AspNetCore.ApiAuthorization.IdentityServer.dll
 D:\Danik\7 semester\PiI\Course Project\WebApp\WebApp\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 D:\Danik\7 semester\PiI\Course Project\WebApp\WebApp\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.OpenIdConnect.dll
@@ -43,6 +45,7 @@ D:\Danik\7 semester\PiI\Course Project\WebApp\WebApp\bin\Debug\net6.0\Microsoft.
 D:\Danik\7 semester\PiI\Course Project\WebApp\WebApp\bin\Debug\net6.0\Microsoft.IdentityModel.Tokens.dll
 D:\Danik\7 semester\PiI\Course Project\WebApp\WebApp\bin\Debug\net6.0\Microsoft.Win32.SystemEvents.dll
 D:\Danik\7 semester\PiI\Course Project\WebApp\WebApp\bin\Debug\net6.0\Newtonsoft.Json.dll
+D:\Danik\7 semester\PiI\Course Project\WebApp\WebApp\bin\Debug\net6.0\Newtonsoft.Json.Bson.dll
 D:\Danik\7 semester\PiI\Course Project\WebApp\WebApp\bin\Debug\net6.0\System.Configuration.ConfigurationManager.dll
 D:\Danik\7 semester\PiI\Course Project\WebApp\WebApp\bin\Debug\net6.0\System.Drawing.Common.dll
 D:\Danik\7 semester\PiI\Course Project\WebApp\WebApp\bin\Debug\net6.0\System.IdentityModel.Tokens.Jwt.dll
@@ -86,6 +89,3 @@ D:\Danik\7 semester\PiI\Course Project\WebApp\WebApp\obj\Debug\net6.0\refint\Web
 D:\Danik\7 semester\PiI\Course Project\WebApp\WebApp\obj\Debug\net6.0\WebApp.pdb
 D:\Danik\7 semester\PiI\Course Project\WebApp\WebApp\obj\Debug\net6.0\WebApp.genruntimeconfig.cache
 D:\Danik\7 semester\PiI\Course Project\WebApp\WebApp\obj\Debug\net6.0\ref\WebApp.dll
-D:\Danik\7 semester\PiI\Course Project\WebApp\WebApp\bin\Debug\net6.0\System.Net.Http.Formatting.dll
-D:\Danik\7 semester\PiI\Course Project\WebApp\WebApp\bin\Debug\net6.0\System.Web.Http.dll
-D:\Danik\7 semester\PiI\Course Project\WebApp\WebApp\bin\Debug\net6.0\Newtonsoft.Json.Bson.dll

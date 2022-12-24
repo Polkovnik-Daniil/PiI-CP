@@ -1,0 +1,1 @@
+ALTER LOGIN [sa] WITH PASSWORD=N'Str0ngPa$$w0rd'

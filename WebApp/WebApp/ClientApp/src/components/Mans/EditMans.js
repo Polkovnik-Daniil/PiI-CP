@@ -44,7 +44,7 @@ export class EditMans extends Component {
         };
 
         const data = JSON.parse(localStorage.getItem("row"));
-        if (data !== null) {
+        if (data !== null && data !== []) {
             this.state.idm = data.idm;
             this.state.passport_number = data.passport_number;
             this.state.name = data.name;

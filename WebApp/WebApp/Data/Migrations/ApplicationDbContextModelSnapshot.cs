@@ -105,7 +105,7 @@ namespace WebApp.Data.Migrations
 
                     b.HasIndex("Use");
 
-                    b.ToTable("Keys");
+                    b.ToTable("Keys", (string)null);
                 });
 
             modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.PersistedGrant", b =>
@@ -321,7 +321,7 @@ namespace WebApp.Data.Migrations
 
                     b.HasKey("IDA");
 
-                    b.ToTable("Airplanes");
+                    b.ToTable("Airplanes", (string)null);
                 });
 
             modelBuilder.Entity("WebApp.Models.ApplicationUser", b =>
@@ -436,7 +436,7 @@ namespace WebApp.Data.Migrations
 
                     b.HasKey("FID");
 
-                    b.ToTable("Flights");
+                    b.ToTable("Flights", (string)null);
                 });
 
             modelBuilder.Entity("WebApp.Models.Mans", b =>
@@ -465,7 +465,7 @@ namespace WebApp.Data.Migrations
 
                     b.HasKey("IDM");
 
-                    b.ToTable("Mans");
+                    b.ToTable("Mans", (string)null);
                 });
 
             modelBuilder.Entity("WebApp.Models.Tickets", b =>
@@ -489,7 +489,7 @@ namespace WebApp.Data.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Tickets");
+                    b.ToTable("Tickets", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

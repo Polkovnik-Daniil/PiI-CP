@@ -41,13 +41,38 @@ export class Flights extends Component {
         this.state = {
             toEdit: false,
             isAutentificated: false,
-            data: [], loading: true,
+            data: null, loading: true,
             row: null,
             columns: [],
             canAccess: null,
             redtoauth: false,  //redirect to authorisation
             username: null,
             token: null,
+            listElem: [
+                [
+                    { dataField: "fid", text: "ID рейса", sort: true, filter: textFilter() }, //add filter into BootstrapTable
+                    { dataField: "ida", text: "ID самолета", sort: true, filter: textFilter() },
+                    { dataField: "date_and_Time_of_Departure", text: "Время отбытия", sort: true, filter: textFilter() },
+                    { dataField: "date_and_Time_of_Arrival", text: "Время прибытия", sort: true, filter: textFilter() },
+                    { dataField: "departure_Point", text: "Точка отбытия", sort: true, filter: textFilter() },
+                    { dataField: "departure_Airport", text: "Аэропорт отбытия", sort: true, filter: textFilter() },
+                    { dataField: "point_of_Arrival", text: "Точка прибытия", sort: true, filter: textFilter() },
+                    { dataField: "arrival_Airport", text: "Аэропорт прибытия", sort: true, filter: textFilter() },
+                    { dataField: "status", text: "Статус", sort: true, filter: textFilter() },
+                    { dataField: "number_Free_places", text: "Количество свободных мест", sort: true, filter: textFilter() }
+                ],
+                [
+                    { dataField: "fid", text: "ID рейса", sort: true, filter: textFilter() }, //add filter into BootstrapTable
+                    { dataField: "date_and_Time_of_Departure", text: "Время отбытия", sort: true, filter: textFilter() },
+                    { dataField: "date_and_Time_of_Arrival", text: "Время прибытия", sort: true, filter: textFilter() },
+                    { dataField: "departure_Point", text: "Точка отбытия", sort: true, filter: textFilter() },
+                    { dataField: "departure_Airport", text: "Аэропорт отбытия", sort: true, filter: textFilter() },
+                    { dataField: "point_of_Arrival", text: "Точка прибытия", sort: true, filter: textFilter() },
+                    { dataField: "arrival_Airport", text: "Аэропорт прибытия", sort: true, filter: textFilter() },
+                    { dataField: "status", text: "Статус", sort: true, filter: textFilter() },
+                    { dataField: "number_Free_places", text: "Количество свободных мест", sort: true, filter: textFilter() }
+                ]
+            ],
             //add pagination into BootstrapTable
             pagination: paginationFactory({
                 page: 1,
@@ -76,25 +101,27 @@ export class Flights extends Component {
 
     componentDidMount() {
         this._subscription = authService.subscribe(() => this.getData());
-        this.getAccess();
         this.getData();
+        this.getAccess();
     }
 
     async getData() {
+        
+       
+        //
         var response = await fetch(`api/flights/get`, {
             headers: { 'Content-Type': 'application/json' }
         });
+        var dataM; 
         if (response.status !== 204) {
-            const dataMans = await response.json();
+            dataM= await response.json();
             //set real id man in table, not number
-            localStorage.setItem("DFS", JSON.stringify(dataMans));
+            localStorage.setItem("DFS", JSON.stringify(dataM));
             //this.setState({ loading: false, data: dataMans });
-            this.state.data = dataMans;
-            this.state.loading = false;
-            //this.setState({});
-            //remove!!
+            this.state.data = dataM;
+             //remove!!
         }
-        this.setState({ loading: false });
+        this.setState((state) => { return { loading: false, data: dataM } });
     }
 
     async getAccess() {
@@ -107,43 +134,41 @@ export class Flights extends Component {
                 headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
             });
             canAccess_ = await response.json();
+            this.state.isAutentificated = true;
             this.state.canAccess = canAccess_;
-            this.state.loading = false;
             //
             this.state.token=token;
-            this.state.isAutentificated = true;
-            this.setState({ canAccess: canAccess_, loading: false });
+            this.setState((state) => { return { loading: false } });
         } else {
             canAccess_ = false;
-            this.setState({ canAccess: false, loading: false });
+            this.setState((state) => { return { canAccess: false, loading: false } });
         }
-        if (canAccess_) {
-            this.state.columns = [
-                { dataField: "fid", text: "ID рейса", sort: true, filter: textFilter() }, //add filter into BootstrapTable
-                { dataField: "ida", text: "ID самолета", sort: true, filter: textFilter() },
-                { dataField: "date_and_Time_of_Departure", text: "Время отбытия", sort: true, filter: textFilter() },
-                { dataField: "date_and_Time_of_Arrival", text: "Время прибытия", sort: true, filter: textFilter() },
-                { dataField: "departure_Point", text: "Точка отбытия", sort: true, filter: textFilter() },
-                { dataField: "departure_Airport", text: "Аэропорт отбытия", sort: true, filter: textFilter() },
-                { dataField: "point_of_Arrival", text: "Точка прибытия", sort: true, filter: textFilter() },
-                { dataField: "arrival_Airport", text: "Аэропорт прибытия", sort: true, filter: textFilter() },
-                { dataField: "status", text: "Статус", sort: true, filter: textFilter() },
-                { dataField: "number_Free_places", text: "Количество свободных мест", sort: true, filter: textFilter() }
-            ];
-        } else {
-            this.state.columns = [
-                { dataField: "fid", text: "ID рейса", sort: true, filter: textFilter() }, //add filter into BootstrapTable
-                { dataField: "date_and_Time_of_Departure", text: "Время отбытия", sort: true, filter: textFilter() },
-                { dataField: "date_and_Time_of_Arrival", text: "Время прибытия", sort: true, filter: textFilter() },
-                { dataField: "departure_Point", text: "Точка отбытия", sort: true, filter: textFilter() },
-                { dataField: "departure_Airport", text: "Аэропорт отбытия", sort: true, filter: textFilter() },
-                { dataField: "point_of_Arrival", text: "Точка прибытия", sort: true, filter: textFilter() },
-                { dataField: "arrival_Airport", text: "Аэропорт прибытия", sort: true, filter: textFilter() },
-                { dataField: "status", text: "Статус", sort: true, filter: textFilter() },
-                { dataField: "number_Free_places", text: "Количество свободных мест", sort: true, filter: textFilter() }
-            ];
-        }
-        //this.setState({});
+        //if (canAccess_) {
+        //    this.state.columns = [
+        //        { dataField: "fid", text: "ID рейса", sort: true, filter: textFilter() }, //add filter into BootstrapTable
+        //        { dataField: "ida", text: "ID самолета", sort: true, filter: textFilter() },
+        //        { dataField: "date_and_Time_of_Departure", text: "Время отбытия", sort: true, filter: textFilter() },
+        //        { dataField: "date_and_Time_of_Arrival", text: "Время прибытия", sort: true, filter: textFilter() },
+        //        { dataField: "departure_Point", text: "Точка отбытия", sort: true, filter: textFilter() },
+        //        { dataField: "departure_Airport", text: "Аэропорт отбытия", sort: true, filter: textFilter() },
+        //        { dataField: "point_of_Arrival", text: "Точка прибытия", sort: true, filter: textFilter() },
+        //        { dataField: "arrival_Airport", text: "Аэропорт прибытия", sort: true, filter: textFilter() },
+        //        { dataField: "status", text: "Статус", sort: true, filter: textFilter() },
+        //        { dataField: "number_Free_places", text: "Количество свободных мест", sort: true, filter: textFilter() }
+        //    ];//this.state.listElem[0];
+        //} else {
+        //    this.state.columns = [
+        //        { dataField: "fid", text: "ID рейса", sort: true, filter: textFilter() }, //add filter into BootstrapTable
+        //        { dataField: "date_and_Time_of_Departure", text: "Время отбытия", sort: true, filter: textFilter() },
+        //        { dataField: "date_and_Time_of_Arrival", text: "Время прибытия", sort: true, filter: textFilter() },
+        //        { dataField: "departure_Point", text: "Точка отбытия", sort: true, filter: textFilter() },
+        //        { dataField: "departure_Airport", text: "Аэропорт отбытия", sort: true, filter: textFilter() },
+        //        { dataField: "point_of_Arrival", text: "Точка прибытия", sort: true, filter: textFilter() },
+        //        { dataField: "arrival_Airport", text: "Аэропорт прибытия", sort: true, filter: textFilter() },
+        //        { dataField: "status", text: "Статус", sort: true, filter: textFilter() },
+        //        { dataField: "number_Free_places", text: "Количество свободных мест", sort: true, filter: textFilter() }
+        //    ];//this.state.listElem[1];
+        //}
     }
 
     renderMans() {
@@ -193,7 +218,7 @@ export class Flights extends Component {
         return (
             <div>
                 <center><h1 id="tabelLabel" >Flights data</h1></center>
-                <BootstrapTable bootstrap4 keyField='fid' columns={this.state.columns}
+                <BootstrapTable bootstrap4 keyField='fid' columns={this.state.canAccess ? this.state.listElem[0] : this.state.listElem[1]}
                     data={this.state.data} pagination={this.state.pagination} filter={(filterFactory())}
                     rowEvents={rowEvent} />
                 {

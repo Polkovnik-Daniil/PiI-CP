@@ -49,7 +49,7 @@ export class EditFlights extends Component {
         };
 
         const data = JSON.parse(localStorage.getItem("DFSR"));
-        if (data !== null) {
+        if (data !== null && data !== []) {
             this.state.fid = data.fid;
             this.state.ida = data.ida;
             this.state.date_and_Time_of_Departure = data.date_and_Time_of_Departure;

@@ -43,7 +43,7 @@ export class EditTickets extends Component {
         };
 
         const data = JSON.parse(localStorage.getItem("DT"));
-        if (data !== null) {
+        if (data !== null && data !== []) {
             this.state.id = data.id;
             this.state.idf = data.idf;
             this.state.mid = data.mid;

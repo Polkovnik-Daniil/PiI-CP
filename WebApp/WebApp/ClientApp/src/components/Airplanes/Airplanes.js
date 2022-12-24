@@ -97,7 +97,9 @@ export class Airplanes extends Component {
             };
 
             const create = () =>{
-                this.setState({toEdit : true});
+                this.setState({ toEdit: true });
+                this.state.toEdit = true;
+                localStorage.removeItem("REA");
             };
 
             return (
